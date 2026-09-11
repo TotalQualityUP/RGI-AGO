@@ -274,7 +274,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
     var options = {
       title: 'Estimaciones vs. Entrada, Resueltos y Ocupación (Agosto 2026)',
       height: 480,
-      isStacked: true,
+      isStacked: true, // Mantiene habilitado el apilamiento parcial
       seriesType: 'bars',
       backgroundColor: 'transparent',
       chartArea: { width: '88%', height: '72%' },
@@ -285,14 +285,16 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
       },
       hAxis: {
         title: 'Días de Agosto',
-        slantedText: true,
-        slantedTextAngle: 45
+        slantedText: false,     // Coloca el texto horizontal (0 grados)
+        slantedTextAngle: 0
       },
       series: {
-        0: { targetAxisIndex: 0, labelInLegend: 'Tickets Estimados' },
-        1: { targetAxisIndex: 0, labelInLegend: 'Estimados Presencial' },
-        2: { targetAxisIndex: 0, labelInLegend: 'Entrada' },
-        3: { targetAxisIndex: 0, labelInLegend: 'Resueltos' },
+        // Asignamos las series apiladas al mismo grupo de apilamiento (stack)
+        0: { targetAxisIndex: 0, labelInLegend: 'Tickets Estimados', stack: 'estimacion' },
+        1: { targetAxisIndex: 0, labelInLegend: 'Estimados Presencial', stack: 'estimacion' },
+        // Entrada y Resueltos en stacks independientes para que aparezcan al lado
+        2: { targetAxisIndex: 0, labelInLegend: 'Entrada', stack: 'entrada' },
+        3: { targetAxisIndex: 0, labelInLegend: 'Resueltos', stack: 'resueltos' },
         4: { 
           type: 'line', 
           targetAxisIndex: 1, 
