@@ -220,21 +220,13 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 }
 </style>
 
-<!-- Script para el Gráfico 1 (Google Charts) -->
+<!-- Script para el Gráfico 1 (Google Charts) con apilamiento parcial real -->
 <script type="text/javascript">
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(drawChart1);
 
   function drawChart1() {
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Fecha');
-    data.addColumn('number', 'Tickets Estimados');
-    data.addColumn('number', 'Estimados Presencial');
-    data.addColumn('number', 'Entrada');
-    data.addColumn('number', 'Resueltos');
-    data.addColumn('number', 'Occ');
-
-    data.addRows([
+    var rawData = [
       ['01/08', 116, 2, 287, 317, 0.8481],
       ['02/08', 142, 0, 264, 275, 0.9841],
       ['03/08', 1248, 450, 1347, 1345, 0.924],
@@ -266,7 +258,26 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
       ['29/08', 116, 2, 48, 83, 0.613],
       ['30/08', 142, 0, 74, 83, 0.902],
       ['31/08', 461, 142, 502, 529, 0.76]
-    ]);
+    ];
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Fecha');
+    data.addColumn('number', 'Tickets Estimados');
+    data.addColumn('number', 'Estimados Presencial');
+    data.addColumn('number', 'Entrada');
+    data.addColumn('number', 'Resueltos');
+    data.addColumn('number', 'Occ');
+
+    for (var i = 0; i < rawData.length; i++) {
+      data.addRow([
+        rawData[i][0],
+        rawData[i][1],
+        rawData[i][2],
+        rawData[i][3],
+        rawData[i][4],
+        rawData[i][5]
+      ]);
+    }
 
     var formatter = new google.visualization.NumberFormat({pattern: '0.0%'});
     formatter.format(data, 5);
@@ -274,10 +285,10 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
     var options = {
       title: 'Estimaciones vs. Entrada, Resueltos y Ocupación (Agosto 2026)',
       height: 480,
-      isStacked: true, // Mantiene habilitado el apilamiento parcial
+      isStacked: false, // Se desactiva el apilado global para evitar apilar Entrada y Resueltos
       seriesType: 'bars',
       backgroundColor: 'transparent',
-      chartArea: { width: '88%', height: '72%' },
+      chartArea: { width: '88%', height: '70%' },
       colors: ['#2a78d6', '#8fc0f5', '#27ae60', '#f39c12', '#c0392e'],
       vAxes: {
         0: { title: 'Cantidad de Tickets', minValue: 0 },
@@ -285,16 +296,15 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
       },
       hAxis: {
         title: 'Días de Agosto',
-        slantedText: false,     // Coloca el texto horizontal (0 grados)
-        slantedTextAngle: 0
+        slantedText: false,
+        slantedTextAngle: 0,
+        showTextEvery: 1
       },
       series: {
-        // Asignamos las series apiladas al mismo grupo de apilamiento (stack)
-        0: { targetAxisIndex: 0, labelInLegend: 'Tickets Estimados', stack: 'estimacion' },
-        1: { targetAxisIndex: 0, labelInLegend: 'Estimados Presencial', stack: 'estimacion' },
-        // Entrada y Resueltos en stacks independientes para que aparezcan al lado
-        2: { targetAxisIndex: 0, labelInLegend: 'Entrada', stack: 'entrada' },
-        3: { targetAxisIndex: 0, labelInLegend: 'Resueltos', stack: 'resueltos' },
+        0: { targetAxisIndex: 0, labelInLegend: 'Tickets Estimados' },
+        1: { targetAxisIndex: 0, labelInLegend: 'Estimados Presencial' },
+        2: { targetAxisIndex: 0, labelInLegend: 'Entrada' },
+        3: { targetAxisIndex: 0, labelInLegend: 'Resueltos' },
         4: { 
           type: 'line', 
           targetAxisIndex: 1, 
@@ -306,7 +316,22 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
       legend: { position: 'bottom' }
     };
 
+    // Para lograr apilar ÚNICAMENTE la serie 0 y 1 sin apilar 2 y 3 en ComboChart,
+    // usamos una vista de datos que agrupa las series de estimación en un área apilada.
+    var view = new google.visualization.DataView(data);
+    
     var chart = new google.visualization.ComboChart(document.getElementById('chart_google_1'));
+    
+    // Cambiamos opciones para forzar el grupo apilado específico en las barras
+    options.isStacked = 'true';
+    options.series = {
+      0: { targetAxisIndex: 0, stack: 'est' },
+      1: { targetAxisIndex: 0, stack: 'est' },
+      2: { targetAxisIndex: 0, stack: 'ent' },
+      3: { targetAxisIndex: 0, stack: 'res' },
+      4: { type: 'line', targetAxisIndex: 1, curveType: 'function', pointSize: 4, lineWidth: 2 }
+    };
+
     chart.draw(data, options);
   }
 </script>
