@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RGI — Agosto 2026</title>
+<!-- Librería de Google Charts -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <style>
 :root{
   --bg:#f4f3ef;
@@ -151,7 +153,7 @@ tr.total:hover td{background:#f5f3ed}
 .nota p{margin:0 0 9px}
 .nota p:last-child{margin:0}
 
-/* ── Slot de Tableau ────────────────────────────────────────────── */
+/* ── Slot de Visualización ────────────────────────────────────────────── */
 figure.viz{margin:30px 0 0}
 .viz-slot{
   position:relative; min-height:420px; display:flex; align-items:stretch;
@@ -217,6 +219,95 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
   footer{display:none}
 }
 </style>
+
+<!-- Script para el Gráfico 1 (Google Charts) -->
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart1);
+
+  function drawChart1() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Fecha');
+    data.addColumn('number', 'Tickets Estimados');
+    data.addColumn('number', 'Estimados Presencial');
+    data.addColumn('number', 'Entrada');
+    data.addColumn('number', 'Resueltos');
+    data.addColumn('number', 'Occ');
+
+    data.addRows([
+      ['01/08', 116, 2, 287, 317, 0.8481],
+      ['02/08', 142, 0, 264, 275, 0.9841],
+      ['03/08', 1248, 450, 1347, 1345, 0.924],
+      ['04/08', 786, 320, 1268, 1338, 0.9277],
+      ['05/08', 676, 230, 1187, 1266, 0.902],
+      ['06/08', 633, 200, 1076, 1147, 0.911],
+      ['07/08', 575, 200, 915, 915, 0.78],
+      ['08/08', 116, 2, 111, 191, 0.8248],
+      ['09/08', 142, 0, 144, 146, 0.9616],
+      ['10/08', 647, 165, 943, 988, 0.792],
+      ['11/08', 585, 168, 744, 786, 0.84],
+      ['12/08', 503, 151, 726, 770, 0.827],
+      ['13/08', 471, 150, 693, 733, 0.833],
+      ['14/08', 428, 133, 625, 625, 0.716],
+      ['15/08', 250, 2, 98, 171, 0.8352],
+      ['16/08', 300, 0, 85, 129, 0.7545],
+      ['17/08', 450, 0, 235, 287, 0.8513],
+      ['18/08', 700, 450, 1105, 1151, 0.849],
+      ['19/08', 476, 300, 903, 937, 0.82],
+      ['20/08', 445, 186, 679, 709, 0.77],
+      ['21/08', 405, 161, 549, 549, 0.602],
+      ['22/08', 116, 2, 60, 104, 0.6921],
+      ['23/08', 142, 0, 81, 86, 0.9475],
+      ['24/08', 461, 152, 547, 577, 0.793],
+      ['25/08', 416, 144, 583, 615, 0.771],
+      ['26/08', 358, 130, 519, 547, 0.734],
+      ['27/08', 335, 129, 476, 504, 0.747],
+      ['28/08', 305, 115, 379, 379, 0.734],
+      ['29/08', 116, 2, 48, 83, 0.613],
+      ['30/08', 142, 0, 74, 83, 0.902],
+      ['31/08', 461, 142, 502, 529, 0.76]
+    ]);
+
+    var formatter = new google.visualization.NumberFormat({pattern: '0.0%'});
+    formatter.format(data, 5);
+
+    var options = {
+      title: 'Estimaciones vs. Entrada, Resueltos y Ocupación (Agosto 2026)',
+      height: 480,
+      isStacked: true,
+      seriesType: 'bars',
+      backgroundColor: 'transparent',
+      chartArea: { width: '88%', height: '72%' },
+      colors: ['#2a78d6', '#8fc0f5', '#27ae60', '#f39c12', '#c0392e'],
+      vAxes: {
+        0: { title: 'Cantidad de Tickets', minValue: 0 },
+        1: { title: '% Ocupación (Occ)', format: 'percent', minValue: 0, maxValue: 1 }
+      },
+      hAxis: {
+        title: 'Días de Agosto',
+        slantedText: true,
+        slantedTextAngle: 45
+      },
+      series: {
+        0: { targetAxisIndex: 0, labelInLegend: 'Tickets Estimados' },
+        1: { targetAxisIndex: 0, labelInLegend: 'Estimados Presencial' },
+        2: { targetAxisIndex: 0, labelInLegend: 'Entrada' },
+        3: { targetAxisIndex: 0, labelInLegend: 'Resueltos' },
+        4: { 
+          type: 'line', 
+          targetAxisIndex: 1, 
+          curveType: 'function',
+          pointSize: 4,
+          lineWidth: 2
+        }
+      },
+      legend: { position: 'bottom' }
+    };
+
+    var chart = new google.visualization.ComboChart(document.getElementById('chart_google_1'));
+    chart.draw(data, options);
+  }
+</script>
 </head>
 <body>
 
@@ -293,33 +384,11 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 
   <figure class="viz">
     <div class="viz-slot" data-viz="1">
-      <!-- ══════════ GRÁFICO 1 ══════════
-           Pegá acá el código embed de Tableau (Compartir → Insertar código).
-           Alternativa estática para imprimir:
-           <img src="graficos/01-estimado-vs-real.png" alt="Tickets estimados e ingresados por día">
-      -->
-      <div class="viz-ph">
-        <span class="num">Gráfico 1</span>
-        <span class="t">Estimado vs. ingresado, por día</span>
-        <span class="h">Sugerido: columnas con el ingreso real y línea de estimación encima, para que se vea dónde queda corta y dónde sobra. Marcar los días de inicio de clases.</span>
-      </div>
+      <!-- GRÁFICO 1 GENERADO VÍA GOOGLE CHARTS -->
+      <div id="chart_google_1" style="width: 100%; height: 480px;"></div>
     </div>
     <figcaption><b>Gráfico 1.</b> Tickets estimados y tickets efectivamente ingresados, por día. Fuente: Estimación DA Agosto 2026 · Zendesk.</figcaption>
   </figure>
-
-  <!-- ¿Querés un segundo gráfico en esta sección (ocupancia semanal, o ingresados vs. resueltos)?
-       Descomentá el bloque de abajo y numeralo como Gráfico 1 bis.
-  <figure class="viz">
-    <div class="viz-slot" data-viz="1b">
-      <div class="viz-ph">
-        <span class="num">Gráfico 1 bis</span>
-        <span class="t">Ocupancia por semana</span>
-        <span class="h">Línea de S1 a S5 con una referencia horizontal en el promedio del mes (81,4 %).</span>
-      </div>
-    </div>
-    <figcaption><b>Gráfico 1 bis.</b> Ocupancia semanal de asesores. Fuente: cálculo de ocupancia.</figcaption>
-  </figure>
-  -->
 </section>
 
 <!-- ═══════════════════════ 02 · DESVÍOS ═══════════════════════ -->
@@ -362,10 +431,6 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 
   <figure class="viz">
     <div class="viz-slot" data-viz="2">
-      <!-- ══════════ GRÁFICO 2 ══════════
-           Pegá acá el código embed de Tableau.
-           Alternativa estática: <img src="graficos/02-desvios.png" alt="Desvíos por temática y tipo">
-      -->
       <div class="viz-ph">
         <span class="num">Gráfico 2</span>
         <span class="t">Desvíos por temática y tipo</span>
@@ -402,10 +467,6 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 
   <figure class="viz">
     <div class="viz-slot" data-viz="3">
-      <!-- ══════════ GRÁFICO 3 ══════════
-           Pegá acá el código embed de Tableau.
-           Alternativa estática: <img src="graficos/03-titulos.png" alt="Altas, finalizados y stock de trámites de títulos">
-      -->
       <div class="viz-ph">
         <span class="num">Gráfico 3</span>
         <span class="t">Altas, finalizados y stock de trámites</span>
@@ -442,7 +503,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
         <tbody>
           <tr><td>Sin aprobar</td><td class="n">16.559</td><td class="n">93,8 %</td></tr>
           <tr><td>Para aprobar</td><td class="n">1.096</td><td class="n">6,2 %</td></tr>
-          <tr class="total"><td>Total</td><td class="n">17.655</td><td class="n">100 %</td></tr>
+          <tr class="total"><td>Total</td><td class="n">100 %</td></tr>
         </tbody>
       </table>
     </div>
@@ -473,10 +534,6 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 
   <figure class="viz">
     <div class="viz-slot" data-viz="4">
-      <!-- ══════════ GRÁFICO 4 ══════════
-           Pegá acá el código embed de Tableau.
-           Alternativa estática: <img src="graficos/04-macros.png" alt="Uso de macros de aprobación">
-      -->
       <div class="viz-ph">
         <span class="num">Gráfico 4</span>
         <span class="t">Evolución semanal del circuito con aprobación</span>
@@ -497,7 +554,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 </footer>
 
 <script>
-/* 1. El recuadro guía desaparece solo cuando pegás el embed de Tableau (o un <img>) dentro del slot. */
+/* 1. El recuadro guía desaparece solo cuando se inserta un contenido dentro del slot (como #chart_google_1). */
 document.querySelectorAll('.viz-slot').forEach(function(slot){
   var ph = slot.querySelector(':scope > .viz-ph');
   if(!ph) return;
