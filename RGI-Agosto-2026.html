@@ -221,7 +221,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 </style>
 
 <!-- Script para el Gráfico 1 (Google Charts) con apilamiento parcial real -->
-<!-- Gráfico 1: Estimaciones apiladas + Entrada + Resueltos + OCC -->
+<!-- Script para el Gráfico 1 (Google Charts) -->
 <script type="text/javascript">
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(drawChart1);
@@ -262,16 +262,6 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
       ['31/08', 461, 142, 502, 529, 0.76]
     ];
 
-    /*
-      Cada día se divide en 3 posiciones:
-
-      01/08 - Estimación
-      01/08 - Entrada
-      01/08 - Resueltos
-
-      Así podemos apilar SOLO las dos series de estimación.
-    */
-
     var data = new google.visualization.DataTable();
 
     data.addColumn('string', 'Fecha');
@@ -280,6 +270,23 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
     data.addColumn('number', 'Entrada');
     data.addColumn('number', 'Resueltos');
     data.addColumn('number', 'Occ');
+
+
+    /*
+      ---------------------------------------------------------
+      CREAMOS 3 POSICIONES POR DÍA
+
+      1. Estimación
+      2. Entrada
+      3. Resueltos
+
+      Las barras siguen funcionando exactamente como antes.
+
+      La diferencia importante es que OCC se carga en las
+      3 posiciones. Así Google Charts puede unir la línea
+      y no genera cortes por valores null.
+      ---------------------------------------------------------
+    */
 
     for (var i = 0; i < rawData.length; i++) {
 
@@ -290,7 +297,11 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
       var resueltos = rawData[i][4];
       var occ = rawData[i][5];
 
-      // Posición 1: Estimaciones
+
+      // ------------------------------------------------------
+      // POSICIÓN 1: ESTIMACIÓN
+      // ------------------------------------------------------
+
       data.addRow([
         fecha + ' - Est.',
         estimados,
@@ -300,88 +311,183 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
         occ
       ]);
 
-      // Posición 2: Entrada
+
+      // ------------------------------------------------------
+      // POSICIÓN 2: ENTRADA
+      // ------------------------------------------------------
+
       data.addRow([
         fecha + ' - Entrada',
         null,
         null,
         entrada,
         null,
-        null
+        occ
       ]);
 
-      // Posición 3: Resueltos
+
+      // ------------------------------------------------------
+      // POSICIÓN 3: RESUELTOS
+      // ------------------------------------------------------
+
       data.addRow([
         fecha + ' - Resueltos',
         null,
         null,
         null,
         resueltos,
-        null
+        occ
       ]);
     }
 
-    // Formato de porcentaje
+
+    /*
+      ---------------------------------------------------------
+      FORMATO DE OCC
+      ---------------------------------------------------------
+    */
+
     var formatter = new google.visualization.NumberFormat({
       pattern: '0.0%'
     });
 
     formatter.format(data, 5);
 
+
+    /*
+      ---------------------------------------------------------
+      TICKS DEL EJE X
+      ---------------------------------------------------------
+
+      Internamente existen:
+
+      01/08 - Est.
+      01/08 - Entrada
+      01/08 - Resueltos
+
+      Pero visualmente mostramos solamente:
+
+      01/08
+
+      utilizando la posición central del grupo.
+      ---------------------------------------------------------
+    */
+
+    var ticks = [];
+
+    for (var i = 0; i < rawData.length; i++) {
+
+      ticks.push({
+        v: rawData[i][0] + ' - Entrada',
+        f: rawData[i][0]
+      });
+
+    }
+
+
+    /*
+      ---------------------------------------------------------
+      CONFIGURACIÓN DEL GRÁFICO
+      ---------------------------------------------------------
+    */
+
     var options = {
 
       title: 'Estimaciones vs. Entrada, Resueltos y Ocupación (Agosto 2026)',
 
-      height: 520,
+      height: 480,
 
-      // SOLO las dos primeras series se apilan visualmente
+      /*
+        IMPORTANTE:
+        mantenemos el apilamiento global porque las dos
+        series de estimación deben seguir apiladas.
+      */
       isStacked: true,
 
       seriesType: 'bars',
 
       backgroundColor: 'transparent',
 
+
       chartArea: {
         width: '88%',
-        height: '68%',
+        height: '70%',
         left: 70,
-        top: 60
+        top: 55
       },
 
+
       colors: [
-        '#2a78d6', // Tickets estimados
-        '#8fc0f5', // Estimados presencial
-        '#27ae60', // Entrada
-        '#f39c12', // Resueltos
-        '#c0392e'  // OCC
+        '#2a78d6',  // Tickets Estimados
+        '#8fc0f5',  // Estimados Presencial
+        '#27ae60',  // Entrada
+        '#f39c12',  // Resueltos
+        '#c0392e'   // OCC
       ],
 
+
+      /*
+        -------------------------------------------------------
+        EJES VERTICALES
+        -------------------------------------------------------
+      */
+
       vAxes: {
+
         0: {
           title: 'Cantidad de Tickets',
           minValue: 0
         },
+
         1: {
           title: '% Ocupación (OCC)',
           format: 'percent',
           minValue: 0,
           maxValue: 1
         }
+
       },
 
+
+      /*
+        -------------------------------------------------------
+        EJE X
+        -------------------------------------------------------
+
+        Aunque existen 93 posiciones internas,
+        solo mostramos una etiqueta por día.
+        -------------------------------------------------------
+      */
+
       hAxis: {
+
         title: 'Días de Agosto',
+
+        ticks: ticks,
+
         slantedText: true,
+
         slantedTextAngle: 45,
-        showTextEvery: 1,
+
         textStyle: {
-          fontSize: 9
+          fontSize: 10
         }
+
       },
+
+
+      /*
+        -------------------------------------------------------
+        SERIES
+        -------------------------------------------------------
+      */
 
       series: {
 
-        // Estimación apilada
+        // -----------------------------------------
+        // ESTIMACIONES
+        // -----------------------------------------
+
         0: {
           targetAxisIndex: 0,
           labelInLegend: 'Tickets Estimados'
@@ -392,47 +498,105 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
           labelInLegend: 'Estimados Presencial'
         },
 
-        // Entrada independiente
+
+        // -----------------------------------------
+        // ENTRADA
+        // -----------------------------------------
+
         2: {
           targetAxisIndex: 0,
           labelInLegend: 'Entrada'
         },
 
-        // Resueltos independiente
+
+        // -----------------------------------------
+        // RESUELTOS
+        // -----------------------------------------
+
         3: {
           targetAxisIndex: 0,
           labelInLegend: 'Resueltos'
         },
 
-        // OCC como línea
+
+        // -----------------------------------------
+        // OCC
+        // -----------------------------------------
+
         4: {
+
           type: 'line',
+
           targetAxisIndex: 1,
-          labelInLegend: 'OCC',
-          pointSize: 4,
+
+          /*
+            Sin curva suavizada.
+            La línea une directamente los valores diarios.
+          */
+          curveType: 'none',
+
+          /*
+            Eliminamos los puntos.
+          */
+          pointSize: 0,
+
           lineWidth: 2,
-          curveType: 'function'
+
+          labelInLegend: 'OCC'
+
         }
+
       },
+
+
+      /*
+        -------------------------------------------------------
+        LEYENDA
+        -------------------------------------------------------
+      */
 
       legend: {
         position: 'bottom'
       },
 
+
+      /*
+        -------------------------------------------------------
+        ANCHO DE LAS BARRAS
+        -------------------------------------------------------
+      */
+
       bar: {
         groupWidth: '65%'
       },
 
+
+      /*
+        -------------------------------------------------------
+        TOOLTIP
+        -------------------------------------------------------
+      */
+
       tooltip: {
         trigger: 'focus'
       }
+
     };
+
+
+    /*
+      ---------------------------------------------------------
+      CREAR GRÁFICO
+      ---------------------------------------------------------
+    */
 
     var chart = new google.visualization.ComboChart(
       document.getElementById('chart_google_1')
     );
 
+
     chart.draw(data, options);
+
   }
 </script>
 </head>
