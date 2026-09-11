@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RGI — Agosto 2026</title>
+<style>
+:root{
+  --bg:#f4f3ef;
+  --card:#fff;
+  --navy:#132436;
+  --ink:#16160f;
+  --ink-2:#3f3e38;
+  --ink-3:#7c7b73;
+  --rule:#e5e3dc;
+  --rule-2:#cfcdc4;
+  --accent:#2a78d6;
+  --accent-dk:#1c5cab;
+  --accent-lt:#8fc0f5;
+  --accent-soft:#eff5fd;
+  --pos:#0a6b32;
+  --neg:#c0392e;
+  --sans:"Inter","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --nav-h:52px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; background:var(--bg)}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:16.5px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px; margin:0 auto; padding:0 24px}
+
+/* ── Barra de instrucciones (no se imprime) ─────────────────────── */
+.howto{background:#fdf4e0; color:#5c4514; font-size:13.5px; line-height:1.6;
+  border-bottom:2px dashed #e6cf9b}
+.howto .wrap{padding-top:16px; padding-bottom:16px}
+.howto h2{margin:0 0 6px; font-size:13.5px; color:#4a3608; letter-spacing:.02em}
+.howto p{margin:3px 0; max-width:92ch}
+.howto b{color:#4a3608}
+.howto code{background:#f3e4c2; padding:1px 5px; border-radius:3px; font-size:12.5px}
+
+/* ── Encabezado ─────────────────────────────────────────────────── */
+.hero{background:var(--navy); color:#fff; padding:52px 0 0}
+.hero .eyebrow{
+  margin:0 0 10px; font-size:12px; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--accent-lt);
+}
+.hero h1{
+  margin:0 0 14px; font-size:clamp(32px,5vw,46px); line-height:1.08;
+  letter-spacing:-.025em; font-weight:680;
+}
+.hero .lede{margin:0 0 34px; max-width:66ch; font-size:17.5px; line-height:1.6; color:#c8d2dc}
+.hero-stats{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border-top:1px solid rgba(255,255,255,.16);
+}
+.hero-stats div{padding:18px 20px 24px; border-right:1px solid rgba(255,255,255,.16)}
+.hero-stats div:first-child{padding-left:0}
+.hero-stats div:last-child{border-right:0}
+.hero-stats .l{display:block; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:#9fb0bf; font-weight:600; margin-bottom:6px}
+.hero-stats .v{display:block; font-size:30px; font-weight:640; letter-spacing:-.02em; line-height:1}
+
+/* ── Navegación ─────────────────────────────────────────────────── */
+.nav{
+  position:sticky; top:0; z-index:20; height:var(--nav-h);
+  background:rgba(244,243,239,.93); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule);
+}
+.nav .wrap{display:flex; align-items:center; gap:4px; height:100%; overflow-x:auto; scrollbar-width:none}
+.nav .wrap::-webkit-scrollbar{display:none}
+.nav a{
+  flex:0 0 auto; display:flex; align-items:center; gap:8px;
+  padding:7px 13px; border-radius:100px; text-decoration:none;
+  font-size:13.5px; font-weight:600; color:var(--ink-2); white-space:nowrap;
+  transition:background .15s, color .15s;
+}
+.nav a .i{font-size:11px; font-weight:700; color:var(--ink-3); letter-spacing:.04em}
+.nav a:hover{background:#e9e7e0}
+.nav a.on{background:var(--accent); color:#fff}
+.nav a.on .i{color:rgba(255,255,255,.7)}
+
+/* ── Secciones ──────────────────────────────────────────────────── */
+main{padding:32px 0 8px}
+.sec{
+  background:var(--card); border:1px solid var(--rule); border-radius:12px;
+  padding:34px 40px 38px; margin-bottom:26px; scroll-margin-top:calc(var(--nav-h) + 16px);
+}
+.sec-head{display:flex; align-items:flex-start; gap:18px; margin-bottom:6px}
+.sec-num{
+  font-size:40px; font-weight:700; line-height:.9; color:#e6e4dc;
+  letter-spacing:-.03em; flex:0 0 auto; margin-top:2px;
+}
+.kicker{margin:0 0 2px; font-size:11.5px; font-weight:700; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent)}
+h2{margin:0; font-size:clamp(23px,3vw,28px); line-height:1.18; letter-spacing:-.02em; font-weight:660}
+.sec-lede{margin:10px 0 24px; max-width:76ch; font-size:17px; color:var(--ink-2)}
+
+/* ── Indicadores ────────────────────────────────────────────────── */
+.kpis{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  background:#faf9f5; border:1px solid var(--rule); border-radius:10px;
+  margin:0 0 26px; overflow:hidden;
+}
+.kpis.k3{grid-template-columns:repeat(3,1fr)}
+.kpis.k6{grid-template-columns:repeat(3,1fr)}
+.kpi{padding:15px 18px 17px; border-right:1px solid var(--rule)}
+.kpi:last-child{border-right:0}
+.kpis.k6 .kpi:nth-child(3n){border-right:0}
+.kpis.k6 .kpi:nth-child(-n+3){border-bottom:1px solid var(--rule)}
+.kpi .l{display:block; font-size:11.5px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:650; margin-bottom:5px; line-height:1.3; min-height:2.6em}
+.kpi .v{display:block; font-size:27px; font-weight:640; line-height:1.05; letter-spacing:-.025em}
+.kpi .v.sm{font-size:20px; letter-spacing:-.015em}
+.kpi .n{display:block; font-size:12.5px; color:var(--ink-2); margin-top:6px; line-height:1.4}
+.up{color:var(--pos)} .down{color:var(--neg)}
+
+/* ── Texto ──────────────────────────────────────────────────────── */
+.prose{max-width:74ch}
+.prose p{margin:0 0 16px}
+.prose p:last-child{margin-bottom:0}
+.prose b{font-weight:650}
+
+/* ── Tablas ─────────────────────────────────────────────────────── */
+.tables{display:grid; gap:22px; margin:26px 0 0}
+.tables.two{grid-template-columns:minmax(0,320px) minmax(0,1fr); align-items:start}
+.tbl h3{margin:0 0 9px; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:700}
+table{width:100%; border-collapse:collapse; font-size:14.5px}
+th,td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--rule); vertical-align:baseline}
+thead th{font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3);
+  font-weight:700; border-bottom:1px solid var(--rule-2); white-space:nowrap; padding-bottom:7px}
+td.n,th.n{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:#faf9f5}
+tr.total td{font-weight:650; border-top:1px solid var(--rule-2); background:#faf9f5}
+tr.total:hover td{background:#f5f3ed}
+.grp{color:var(--ink-3); font-size:13px; white-space:nowrap}
+.note{margin:10px 0 0; font-size:13px; color:var(--ink-3)}
+
+/* ── Nota metodológica ──────────────────────────────────────────── */
+.nota{
+  margin:26px 0 0; padding:18px 22px; background:var(--accent-soft);
+  border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+  font-size:14.5px; line-height:1.6; color:var(--ink-2); max-width:86ch;
+}
+.nota h3{margin:0 0 6px; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--accent-dk); font-weight:700}
+.nota p{margin:0 0 9px}
+.nota p:last-child{margin:0}
+
+/* ── Slot de Tableau ────────────────────────────────────────────── */
+figure.viz{margin:30px 0 0}
+.viz-slot{
+  position:relative; min-height:420px; display:flex; align-items:stretch;
+  background:#faf9f5; border:1px solid var(--rule); border-radius:10px; overflow:hidden;
+}
+.viz-slot > *{max-width:100%}
+.viz-slot object,.viz-slot iframe,.viz-slot img,
+.viz-slot .tableauPlaceholder,.viz-slot tableau-viz{max-width:100%!important; width:100%!important}
+.viz-slot img{height:auto; display:block}
+.viz-ph{
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; text-align:center; padding:32px; margin:10px;
+  border:1.5px dashed var(--rule-2); border-radius:6px;
+}
+.viz-ph .num{font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+  font-weight:700; color:var(--accent)}
+.viz-ph .t{font-size:19px; font-weight:620; color:var(--ink-2); letter-spacing:-.01em}
+.viz-ph .h{font-size:14px; color:var(--ink-3); max-width:62ch; line-height:1.5}
+figcaption{margin-top:11px; font-size:13px; color:var(--ink-3); line-height:1.5; max-width:86ch}
+figcaption b{color:var(--ink-2); font-weight:650}
+
+/* ── Pie ────────────────────────────────────────────────────────── */
+footer{border-top:1px solid var(--rule); margin-top:14px; padding:26px 0 48px;
+  font-size:13px; color:var(--ink-3)}
+footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width:840px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .hero{padding-top:36px}
+  .hero-stats{grid-template-columns:repeat(2,1fr)}
+  .hero-stats div{padding:14px 16px 18px}
+  .hero-stats div:nth-child(2n){border-right:0}
+  .hero-stats div:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.16)}
+  .hero-stats div:nth-child(3){padding-left:0}
+  .hero-stats .l{min-height:2.6em}
+  .sec{padding:26px 20px 30px; border-radius:10px}
+  .sec-num{font-size:30px}
+  .kpis,.kpis.k3,.kpis.k6{grid-template-columns:repeat(2,1fr)}
+  .kpi{border-bottom:1px solid var(--rule)}
+  .kpi:nth-child(2n){border-right:0}
+  .tables.two{grid-template-columns:1fr}
+  .viz-slot{min-height:260px}
+  .tbl{overflow-x:auto}
+}
+
+/* ── Impresión ──────────────────────────────────────────────────── */
+@page{size:A4; margin:14mm}
+@media print{
+  html,body{background:#fff}
+  .howto,.nav{display:none!important}
+  .wrap{max-width:none; padding:0}
+  .hero{background:#fff; color:var(--ink); padding:0 0 8px; border-bottom:2px solid var(--ink)}
+  .hero .lede{color:var(--ink-2)}
+  .hero .eyebrow{color:var(--ink-3)}
+  .hero-stats{border-top:1px solid var(--rule)}
+  .hero-stats div{border-right:1px solid var(--rule)}
+  .hero-stats .l{color:var(--ink-3)}
+  .sec{border:0; padding:0; margin:0 0 18px; break-before:page; page-break-before:always}
+  .kpis,table,figure.viz,.nota{break-inside:avoid; page-break-inside:avoid}
+  .viz-slot{min-height:115mm}
+  footer{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="howto">
+  <div class="wrap">
+    <h2>Cómo insertar los gráficos de Tableau (este bloque no se imprime · borralo cuando esté listo)</h2>
+    <p>En cada sección hay un <b>&lt;div class="viz-slot"&gt;</b> con un recuadro punteado. En Tableau: <b>Compartir → Insertar código</b>, copiás el código y lo pegás <b>dentro</b> de ese div, debajo del comentario. El recuadro desaparece solo.</p>
+    <p>El código de Tableau trae ancho fijo: cambiá <code>width='1000px'</code> por <code>width='100%'</code> para que entre en la caja.</p>
+    <p><b>Si lo vas a imprimir o pasar a PDF</b>, mejor una imagen estática que el embed: exportá el gráfico como PNG y pegá <code>&lt;img src="graficos/01-....png" alt="..."&gt;</code> dentro del mismo div.</p>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Reporte de Gestión Integral</p>
+    <h1>Agosto 2026</h1>
+    <p class="lede">El mes cerró sin arrastre y con saldo favorable en las cinco semanas. Los frentes abiertos son tres: la distribución de la estimación, la personalización de las respuestas y el retiro de títulos.</p>
+    <div class="hero-stats">
+      <div><span class="l">Tickets ingresados</span><span class="v">17.253</span></div>
+      <div><span class="l">Tickets resueltos</span><span class="v">18.282</span></div>
+      <div><span class="l">Ocupancia</span><span class="v">81,4 %</span></div>
+      <div><span class="l">Títulos finalizados</span><span class="v">357</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="#planificacion"><span class="i">01</span> Planificación y demanda</a>
+    <a href="#desvios"><span class="i">02</span> Desvíos</a>
+    <a href="#titulos"><span class="i">03</span> Títulos</a>
+    <a href="#aprobador"><span class="i">04</span> Envío al aprobador</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ═══════════════════════ 01 · PLANIFICACIÓN Y DEMANDA ═══════════════════════ -->
+<section class="sec" id="planificacion">
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <div>
+      <p class="kicker">Departamento de Alumnos</p>
+      <h2>Planificación y demanda sobre agosto</h2>
+    </div>
+  </div>
+  <p class="sec-lede">La estimación acierta en el total y falla en la distribución. Aun así el mes cerró sin arrastre, con la ocupancia en baja y la cobertura resuelta con estructura propia.</p>
+
+  <div class="kpis">
+    <div class="kpi"><span class="l">Estimado vs. ingresado</span><span class="v">+1,3 %</span><span class="n">17.032 estimados · 17.253 ingresados</span></div>
+    <div class="kpi"><span class="l">Tickets resueltos</span><span class="v">18.282</span><span class="n">107,3 % de lo estimado</span></div>
+    <div class="kpi"><span class="l">Saldo del mes</span><span class="v up">+1.029</span><span class="n">Favorable en las cinco semanas</span></div>
+    <div class="kpi"><span class="l">Ocupancia</span><span class="v">81,4 %</span><span class="n">80,2 % en días hábiles; de 89,7 a 75,8</span></div>
+  </div>
+
+  <div class="prose">
+    <p>En términos agregados la estimación fue correcta —se proyectaron 17.032 tickets y entraron 17.253, apenas 1,3 % por encima—, pero ese acierto global tapa un problema de distribución que corresponde señalar: los días de mayor demanda se subestiman y los de baja demanda se sobreestiman, de modo que el total cierra por compensación y no por precisión. Las semanas duras, las de inicio de clases y regulares, llegan con una previsión que no refleja el esfuerzo real que van a exigir, y eso complica la planificación justo cuando menos margen hay. Es el punto de autocrítica del mes y el principal frente de trabajo hacia adelante.</p>
+    <p>Aun así, agosto cerró sin arrastre: se resolvieron 18.282 tickets, 1.029 más de los que entraron (107,3 % de lo estimado), con saldo favorable en las cinco semanas, y el pico de inicio de clases se absorbió dentro del propio mes. Vale aclarar cómo: en los días más difíciles el excedente se cargó al turno madrugada para que el arrastre no pasara al día siguiente, un recurso que resuelve pero no es método permanente. La ocupancia cerró en 81,4 % (80,2 % en días hábiles) con una curva descendente de 89,7 % en S1 a 75,8 % en S5; la baja responde en buena parte a la optimización del cálculo aplicada durante el mes, que deja el indicador más fiel y más útil para planificar cada día. La cobertura se resolvió con estructura propia de Front Service, sin refuerzos, con una dotación de 55 a 59 personas y las sedes sin inconvenientes, con MB1050 concentrando el 36,4 % de la atención presencial (781), seguida por Larrea 1079 (443) y Cabrera 3507 (376).</p>
+  </div>
+
+  <div class="tables">
+    <div class="tbl">
+      <h3>Atención presencial · sedes de mayor volumen</h3>
+      <table>
+        <thead><tr><th>Sede</th><th class="n">Atenciones</th><th class="n">Participación</th></tr></thead>
+        <tbody>
+          <tr><td>MB1050</td><td class="n">781</td><td class="n">36,4 %</td></tr>
+          <tr><td>Larrea 1079</td><td class="n">443</td><td class="n">—</td></tr>
+          <tr><td>Cabrera 3507</td><td class="n">376</td><td class="n">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <figure class="viz">
+    <div class="viz-slot" data-viz="1">
+      <!-- ══════════ GRÁFICO 1 ══════════
+           Pegá acá el código embed de Tableau (Compartir → Insertar código).
+           Alternativa estática para imprimir:
+           <img src="graficos/01-estimado-vs-real.png" alt="Tickets estimados e ingresados por día">
+      -->
+      <div class="viz-ph">
+        <span class="num">Gráfico 1</span>
+        <span class="t">Estimado vs. ingresado, por día</span>
+        <span class="h">Sugerido: columnas con el ingreso real y línea de estimación encima, para que se vea dónde queda corta y dónde sobra. Marcar los días de inicio de clases.</span>
+      </div>
+    </div>
+    <figcaption><b>Gráfico 1.</b> Tickets estimados y tickets efectivamente ingresados, por día. Fuente: Estimación DA Agosto 2026 · Zendesk.</figcaption>
+  </figure>
+
+  <!-- ¿Querés un segundo gráfico en esta sección (ocupancia semanal, o ingresados vs. resueltos)?
+       Descomentá el bloque de abajo y numeralo como Gráfico 1 bis.
+  <figure class="viz">
+    <div class="viz-slot" data-viz="1b">
+      <div class="viz-ph">
+        <span class="num">Gráfico 1 bis</span>
+        <span class="t">Ocupancia por semana</span>
+        <span class="h">Línea de S1 a S5 con una referencia horizontal en el promedio del mes (81,4 %).</span>
+      </div>
+    </div>
+    <figcaption><b>Gráfico 1 bis.</b> Ocupancia semanal de asesores. Fuente: cálculo de ocupancia.</figcaption>
+  </figure>
+  -->
+</section>
+
+<!-- ═══════════════════════ 02 · DESVÍOS ═══════════════════════ -->
+<section class="sec" id="desvios">
+  <div class="sec-head">
+    <span class="sec-num">02</span>
+    <div>
+      <p class="kicker">Calidad · Capacitación</p>
+      <h2>Desvíos</h2>
+    </div>
+  </div>
+  <p class="sec-lede">Sobre 98 tickets auditados con desvío, el problema es de forma: la personalización de la respuesta explica casi la mitad de los desvíos efectivos.</p>
+
+  <div class="kpis">
+    <div class="kpi"><span class="l">Tickets con desvío</span><span class="v">98</span><span class="n">Auditados en el mes</span></div>
+    <div class="kpi"><span class="l">Personalización</span><span class="v">37,8 %</span><span class="n">37 casos; 48,1 % si se dejan de lado los NC</span></div>
+    <div class="kpi"><span class="l">Cursados</span><span class="v">31,6 %</span><span class="n">31 casos; única temática con volumen propio</span></div>
+    <div class="kpi"><span class="l">Bloque arancelario</span><span class="v">15,3 %</span><span class="n">15 casos; segundo foco temático</span></div>
+  </div>
+
+  <div class="tables">
+    <div class="tbl">
+      <h3>Distribución por tipo de desvío</h3>
+      <table>
+        <thead><tr><th>Tipo de desvío</th><th class="n">Casos</th><th class="n">% del total</th><th class="n">% sin NC</th></tr></thead>
+        <tbody>
+          <tr><td>Personalización de la respuesta</td><td class="n">37</td><td class="n">37,8 %</td><td class="n">48,1 %</td></tr>
+          <tr><td>Capacitación</td><td class="n">26</td><td class="n">26,5 %</td><td class="n">33,8 %</td></tr>
+          <tr><td>NC</td><td class="n">21</td><td class="n">21,4 %</td><td class="n">—</td></tr>
+          <tr><td>Distracción</td><td class="n">14</td><td class="n">14,3 %</td><td class="n">18,2 %</td></tr>
+          <tr class="total"><td>Total</td><td class="n">98</td><td class="n">100 %</td><td class="n">77 casos</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="prose" style="margin-top:26px">
+    <p>Sobre los 98 tickets auditados con desvío, la distribución por tipo confirma el diagnóstico de forma: personalización de la respuesta es la primera causa con el 37,8 % (37 casos), seguida por desvíos de capacitación con el 26,5 % (26), NC con el 21,4 % (21) y distracción con el 14,3 % (14); si se dejan de lado los NC, la personalización explica casi la mitad de los desvíos efectivos (48,1 %). Corresponde corregir aquí una lectura previa: «Sistemas» no es un tipo de desvío sino una temática de la interacción, y como tal pesa apenas 5 casos (5,1 %) —tres de ellos por personalización—, de modo que no es la segunda causa del mes. Por temática, la concentración está en Cursados, con el 31,6 % de los desvíos (31 casos) y presencia parcelada en los cuatro tipos: 9 de capacitación, 8 de distracción, 8 de personalización y 6 NC. Es el único tema con volumen propio; el resto se fragmenta. El bloque arancelario, en cambio, sí sostiene el reclamo de DA: sumando consultas de aranceles (8), débito automático (3), becas y descuentos (3) y medios de pago (1), llega al 15,3 % del total y es el segundo foco temático, con 8 de esos 15 casos por personalización y 5 por capacitación. Ahí es donde pega la falta de especificación de cuota que el área viene pidiendo —«se requirió la especificación de cada cuota y se me informó se avanzaría en esto, pero aún sin novedades»—: si el asesor no puede ver qué cuota se le está consultando, la respuesta se vuelve genérica, y eso es exactamente lo que la auditoría marca como desvío de personalización.</p>
+  </div>
+
+  <figure class="viz">
+    <div class="viz-slot" data-viz="2">
+      <!-- ══════════ GRÁFICO 2 ══════════
+           Pegá acá el código embed de Tableau.
+           Alternativa estática: <img src="graficos/02-desvios.png" alt="Desvíos por temática y tipo">
+      -->
+      <div class="viz-ph">
+        <span class="num">Gráfico 2</span>
+        <span class="t">Desvíos por temática y tipo</span>
+        <span class="h">Sugerido: barras horizontales de temáticas ordenadas por volumen, segmentadas por tipo de desvío, para que se vea Cursados arriba y el bloque arancelario como segundo foco.</span>
+      </div>
+    </div>
+    <figcaption><b>Gráfico 2.</b> Distribución de los 98 tickets auditados con desvío, por temática de la interacción y tipo de desvío. Fuente: auditoría de Capacitación.</figcaption>
+  </figure>
+</section>
+
+<!-- ═══════════════════════ 03 · TÍTULOS ═══════════════════════ -->
+<section class="sec" id="titulos">
+  <div class="sec-head">
+    <span class="sec-num">03</span>
+    <div>
+      <p class="kicker">Tesorería · SAA · Entrega de Títulos</p>
+      <h2>Títulos: el hilo entre las áreas</h2>
+    </div>
+  </div>
+  <p class="sec-lede">El pico se generó en julio, la respuesta llegó sobre el cierre de agosto y el cuello de botella se corrió al mostrador: se emite más rápido de lo que se retira.</p>
+
+  <div class="kpis k6">
+    <div class="kpi"><span class="l">Altas en agosto</span><span class="v">187</span><span class="n">Mes de menor ingreso del período</span></div>
+    <div class="kpi"><span class="l">Ciclo alta → finalizado</span><span class="v sm down">21,2 → 40,4</span><span class="n">Días; duplicado entre mayo y julio</span></div>
+    <div class="kpi"><span class="l">Trámites emitidos</span><span class="v up">+51,66 %</span><span class="n">Contra julio</span></div>
+    <div class="kpi"><span class="l">Stock de trámites</span><span class="v sm up">687 → 446</span><span class="n">−35 %; 74 % ya en tramo final</span></div>
+    <div class="kpi"><span class="l">Ausentismo en turnos</span><span class="v down">42,6 %</span><span class="n">Sobre 115 turnos tomados</span></div>
+    <div class="kpi"><span class="l">Stock físico</span><span class="v sm down">1.906 → 2.023</span><span class="n">Títulos emitidos sin retirar</span></div>
+  </div>
+
+  <div class="prose">
+    <p>El origen del pico está en Tesorería: «recibimos más títulos de los que teníamos planificados, esto se debió al cambio de que el Depto. de Egresados recibe el 100 % de los títulos emitidos sin importar si este pago o no y el mes de finalización de los mismos». El dato corrige la percepción: la avalancha se generó en julio, no en agosto, que fue el mes de menor ingreso del período con 187 altas. La consecuencia la asume SAA, que reconoce que «no se alcanzó completamente el objetivo establecido para la gestión de títulos, registrándose algunos vencimientos» —el ciclo de alta a finalizado se duplicó entre mayo (21,2 días) y julio (40,4 días)—, y la respuesta llega desde Entrega de Títulos con un 51,66 % más de trámites emitidos que en julio, «en su mayoría concentrado hacia el final del período»: de los 357 finalizados en agosto, 185 se resolvieron entre el 24 y el 28 y solo 5 en la semana del 10 al 14. El esfuerzo dio vuelta la curva —el stock de trámites bajó de 687 a 446 (−35 %), con el 74 % de lo pendiente ya en tramo final—, pero el cuello de botella sigue abierto del lado del retiro: Tesorería señala «un alto porcentaje de ausentismo en los turnos tomados y a su vez un numero alto de alumnos que se presentan en forma espontanea», con 42,6 % de ausentismo sobre 115 turnos y 93 retiros sin turno, el 58 % de las 159 entregas presenciales del mes. El sistema de turnos no está ordenando la demanda, y el resultado es que el stock físico creció de 1.906 a 2.023 títulos: se emite más rápido de lo que se retira.</p>
+  </div>
+
+  <figure class="viz">
+    <div class="viz-slot" data-viz="3">
+      <!-- ══════════ GRÁFICO 3 ══════════
+           Pegá acá el código embed de Tableau.
+           Alternativa estática: <img src="graficos/03-titulos.png" alt="Altas, finalizados y stock de trámites de títulos">
+      -->
+      <div class="viz-ph">
+        <span class="num">Gráfico 3</span>
+        <span class="t">Altas, finalizados y stock de trámites</span>
+        <span class="h">Sugerido: columnas de altas y finalizados por mes (mayo a agosto) con la línea del stock encima; o el detalle diario de agosto, para que se vea la concentración del 24 al 28.</span>
+      </div>
+    </div>
+    <figcaption><b>Gráfico 3.</b> Movimiento de trámites de títulos (ID 10) y evolución del stock pendiente. Fuente: pasos de trámites · informes de Tesorería, SAA y Entrega de Títulos.</figcaption>
+  </figure>
+</section>
+
+<!-- ═══════════════════════ 04 · ENVÍO AL APROBADOR ═══════════════════════ -->
+<section class="sec" id="aprobador">
+  <div class="sec-head">
+    <span class="sec-num">04</span>
+    <div>
+      <p class="kicker">Departamento de Alumnos · Circuito de aprobación</p>
+      <h2>Envío al aprobador</h2>
+    </div>
+  </div>
+  <p class="sec-lede">De cada 100 usos de macro, 6 pasan por el circuito con aprobación. La proporción es estable y no hay pico que explique nada raro.</p>
+
+  <div class="kpis">
+    <div class="kpi"><span class="l">Sin aprobar</span><span class="v">16.559</span><span class="n">93,8 % de las aplicaciones</span></div>
+    <div class="kpi"><span class="l">Para aprobar</span><span class="v">1.096</span><span class="n">6,2 % de las aplicaciones</span></div>
+    <div class="kpi"><span class="l">Total aplicaciones</span><span class="v">17.655</span><span class="n">17.100 actualizaciones reales</span></div>
+    <div class="kpi"><span class="l">Tickets tocados</span><span class="v">12.462</span><span class="n">Un ticket puede recibir varias macros</span></div>
+  </div>
+
+  <div class="tables two">
+    <div class="tbl">
+      <h3>El corte principal</h3>
+      <table>
+        <thead><tr><th>Grupo</th><th class="n">Aplicaciones</th><th class="n">%</th></tr></thead>
+        <tbody>
+          <tr><td>Sin aprobar</td><td class="n">16.559</td><td class="n">93,8 %</td></tr>
+          <tr><td>Para aprobar</td><td class="n">1.096</td><td class="n">6,2 %</td></tr>
+          <tr class="total"><td>Total</td><td class="n">17.655</td><td class="n">100 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl">
+      <h3>Desglose por macro</h3>
+      <table>
+        <thead><tr><th>Macro</th><th>Grupo</th><th class="n">Aplic.</th><th class="n">% del total</th></tr></thead>
+        <tbody>
+          <tr><td>Mail::Enviar sin aprobador RESUELTO</td><td class="grp">Sin aprobar</td><td class="n">13.367</td><td class="n">75,7 %</td></tr>
+          <tr><td>Mail::Enviar sin aprobador Tickets pendiente</td><td class="grp">Sin aprobar</td><td class="n">2.896</td><td class="n">16,4 %</td></tr>
+          <tr><td>Departamento de Alumnos::Enviar sin aprobador - En espera</td><td class="grp">Sin aprobar</td><td class="n">296</td><td class="n">1,7 %</td></tr>
+          <tr><td>Mail::Para Aprobar</td><td class="grp">Para aprobar</td><td class="n">1.096</td><td class="n">6,2 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="prose" style="margin-top:26px">
+    <p>Mirado por ticket (más representativo, porque un ticket puede recibir varias macros): de los 12.462 tickets tocados, 11.444 (91,8 %) pasaron solo por circuito sin aprobación, 353 (2,8 %) solo por aprobación, y 665 (5,3 %) tuvieron las dos.</p>
+  </div>
+
+  <div class="nota">
+    <h3>Nota metodológica</h3>
+    <p>La proporción es estable mes a mes, entre 4,2 % y 7,3 % semanal: no hay un pico que explique nada raro.</p>
+    <p>Hay 550 actualizaciones donde se registró más de una macro en el mismo movimiento (misma hora, mismo <i>audit_id</i>), o sea 17.100 actualizaciones reales contra 17.655 aplicaciones. Para hablar de «veces que se usó una macro» el número es 17.655; para hablar de «respuestas enviadas», 17.100.</p>
+    <p>También hay dispersión fuerte entre asesores: en el extremo alto «Para aprobar» llega al 18,3 % de los casos, mientras que 13 de los 77 agentes no la usaron nunca.</p>
+  </div>
+
+  <figure class="viz">
+    <div class="viz-slot" data-viz="4">
+      <!-- ══════════ GRÁFICO 4 ══════════
+           Pegá acá el código embed de Tableau.
+           Alternativa estática: <img src="graficos/04-macros.png" alt="Uso de macros de aprobación">
+      -->
+      <div class="viz-ph">
+        <span class="num">Gráfico 4</span>
+        <span class="t">Evolución semanal del circuito con aprobación</span>
+        <span class="h">Sugerido: línea del % semanal de «Para aprobar» sobre el total, con la banda 4,2 %–7,3 % de fondo para mostrar que no hay pico.</span>
+      </div>
+    </div>
+    <figcaption><b>Gráfico 4.</b> Participación semanal de las macros de aprobación sobre el total aplicado. Fuente: Zendesk · macros_aplicadas.</figcaption>
+  </figure>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Reporte de Gestión Integral · Agosto 2026</span>
+    <span>Fuentes: informes de área · Zendesk · pasos de trámites · Estimación DA</span>
+  </div>
+</footer>
+
+<script>
+/* 1. El recuadro guía desaparece solo cuando pegás el embed de Tableau (o un <img>) dentro del slot. */
+document.querySelectorAll('.viz-slot').forEach(function(slot){
+  var ph = slot.querySelector(':scope > .viz-ph');
+  if(!ph) return;
+  var otros = Array.prototype.filter.call(slot.children, function(el){ return el !== ph; });
+  if(otros.length) ph.remove();
+});
+
+/* 2. Resaltado de la sección activa en la barra de navegación. */
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav a'));
+  var secs  = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function marcar(i){ links.forEach(function(a,j){ a.classList.toggle('on', i===j); }); }
+  marcar(0);
+  if(!('IntersectionObserver' in window)) return;
+  var visibles = {};
+  var io = new IntersectionObserver(function(entradas){
+    entradas.forEach(function(e){ visibles[e.target.id] = e.isIntersecting; });
+    for(var i=0;i<secs.length;i++){ if(secs[i] && visibles[secs[i].id]){ marcar(i); return; } }
+  }, {rootMargin:'-25% 0px -60% 0px'});
+  secs.forEach(function(s){ if(s) io.observe(s); });
+})();
+</script>
+</body>
+</html>
