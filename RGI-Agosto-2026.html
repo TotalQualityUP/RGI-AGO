@@ -220,8 +220,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 }
 </style>
 
-<!-- Script para el Gráfico 1 (Google Charts) con apilamiento parcial real -->
-<!-- Script para el Gráfico 1 (Google Charts) -->
+<!-- Script para el Gráfico 1 (Google Charts) con fechas alineadas a 0° -->
 <script type="text/javascript">
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(drawChart1);
@@ -264,150 +263,49 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 
     var data = new google.visualization.DataTable();
 
-    data.addColumn('string', 'Fecha');
+    // Tipo 'date' para un cálculo proporcional del eje horizontal
+    data.addColumn('date', 'Fecha');
     data.addColumn('number', 'Tickets Estimados');
     data.addColumn('number', 'Estimados Presencial');
     data.addColumn('number', 'Entrada');
     data.addColumn('number', 'Resueltos');
-    data.addColumn('number', 'Occ');
-
-
-    /*
-      ---------------------------------------------------------
-      CREAMOS 3 POSICIONES POR DÍA
-
-      1. Estimación
-      2. Entrada
-      3. Resueltos
-
-      Las barras siguen funcionando exactamente como antes.
-
-      La diferencia importante es que OCC se carga en las
-      3 posiciones. Así Google Charts puede unir la línea
-      y no genera cortes por valores null.
-      ---------------------------------------------------------
-    */
-
-    for (var i = 0; i < rawData.length; i++) {
-
-      var fecha = rawData[i][0];
-      var estimados = rawData[i][1];
-      var presencial = rawData[i][2];
-      var entrada = rawData[i][3];
-      var resueltos = rawData[i][4];
-      var occ = rawData[i][5];
-
-
-      // ------------------------------------------------------
-      // POSICIÓN 1: ESTIMACIÓN
-      // ------------------------------------------------------
-
-      data.addRow([
-        fecha + ' - Est.',
-        estimados,
-        presencial,
-        null,
-        null,
-        occ
-      ]);
-
-
-      // ------------------------------------------------------
-      // POSICIÓN 2: ENTRADA
-      // ------------------------------------------------------
-
-      data.addRow([
-        fecha + ' - Entrada',
-        null,
-        null,
-        entrada,
-        null,
-        occ
-      ]);
-
-
-      // ------------------------------------------------------
-      // POSICIÓN 3: RESUELTOS
-      // ------------------------------------------------------
-
-      data.addRow([
-        fecha + ' - Resueltos',
-        null,
-        null,
-        null,
-        resueltos,
-        occ
-      ]);
-    }
-
-
-    /*
-      ---------------------------------------------------------
-      FORMATO DE OCC
-      ---------------------------------------------------------
-    */
-
-    var formatter = new google.visualization.NumberFormat({
-      pattern: '0.0%'
-    });
-
-    formatter.format(data, 5);
-
-
-    /*
-      ---------------------------------------------------------
-      TICKS DEL EJE X
-      ---------------------------------------------------------
-
-      Internamente existen:
-
-      01/08 - Est.
-      01/08 - Entrada
-      01/08 - Resueltos
-
-      Pero visualmente mostramos solamente:
-
-      01/08
-
-      utilizando la posición central del grupo.
-      ---------------------------------------------------------
-    */
+    data.addColumn('number', 'OCC');
 
     var ticks = [];
 
     for (var i = 0; i < rawData.length; i++) {
+      var partes = rawData[i][0].split('/');
+      var dia = parseInt(partes[0], 10);
+      var mes = parseInt(partes[1], 10) - 1; // Mes base 0
+      
+      var baseDate = new Date(2026, mes, dia);
 
+      // Posición 1: Estimaciones (00:00 hs)
+      data.addRow([new Date(2026, mes, dia, 0, 0), rawData[i][1], rawData[i][2], null, null, rawData[i][5]]);
+      
+      // Posición 2: Entrada (08:00 hs)
+      data.addRow([new Date(2026, mes, dia, 8, 0), null, null, rawData[i][3], null, rawData[i][5]]);
+      
+      // Posición 3: Resueltos (16:00 hs)
+      data.addRow([new Date(2026, mes, dia, 16, 0), null, null, null, rawData[i][4], rawData[i][5]]);
+
+      // Marcamos el tick exacto en la barra del centro (08:00 hs)
       ticks.push({
-        v: rawData[i][0] + ' - Entrada',
+        v: new Date(2026, mes, dia, 8, 0),
         f: rawData[i][0]
       });
-
     }
 
-
-    /*
-      ---------------------------------------------------------
-      CONFIGURACIÓN DEL GRÁFICO
-      ---------------------------------------------------------
-    */
+    // Formato porcentual para OCC
+    var formatter = new google.visualization.NumberFormat({ pattern: '0.0%' });
+    formatter.format(data, 5);
 
     var options = {
-
       title: 'Estimaciones vs. Entrada, Resueltos y Ocupación (Agosto 2026)',
-
       height: 480,
-
-      /*
-        IMPORTANTE:
-        mantenemos el apilamiento global porque las dos
-        series de estimación deben seguir apiladas.
-      */
       isStacked: true,
-
       seriesType: 'bars',
-
       backgroundColor: 'transparent',
-
 
       chartArea: {
         width: '88%',
@@ -416,187 +314,53 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
         top: 55
       },
 
-
       colors: [
-        '#2a78d6',  // Tickets Estimados
-        '#8fc0f5',  // Estimados Presencial
-        '#27ae60',  // Entrada
-        '#f39c12',  // Resueltos
-        '#c0392e'   // OCC
+        '#2a78d6', // Tickets Estimados
+        '#8fc0f5', // Estimados Presencial
+        '#27ae60', // Entrada
+        '#f39c12', // Resueltos
+        '#c0392e'  // OCC
       ],
 
-
-      /*
-        -------------------------------------------------------
-        EJES VERTICALES
-        -------------------------------------------------------
-      */
-
       vAxes: {
-
-        0: {
-          title: 'Cantidad de Tickets',
-          minValue: 0
-        },
-
-        1: {
-          title: '% Ocupación (OCC)',
-          format: 'percent',
-          minValue: 0,
-          maxValue: 1
-        }
-
+        0: { title: 'Cantidad de Tickets', minValue: 0 },
+        1: { title: '% Ocupación (OCC)', format: 'percent', minValue: 0, maxValue: 1 }
       },
-
-
-      /*
-        -------------------------------------------------------
-        EJE X
-        -------------------------------------------------------
-
-        Aunque existen 93 posiciones internas,
-        solo mostramos una etiqueta por día.
-        -------------------------------------------------------
-      */
 
       hAxis: {
-
         title: 'Días de Agosto',
-
         ticks: ticks,
-
-        slantedText: true,
-
-        slantedTextAngle: 45,
-
-        textStyle: {
-          fontSize: 10
-        }
-
+        slantedText: false, // Texto horizontal a 0 grados
+        slantedTextAngle: 0,
+        gridlines: { color: 'transparent' },
+        textStyle: { fontSize: 9 }
       },
-
-
-      /*
-        -------------------------------------------------------
-        SERIES
-        -------------------------------------------------------
-      */
 
       series: {
-
-        // -----------------------------------------
-        // ESTIMACIONES
-        // -----------------------------------------
-
-        0: {
-          targetAxisIndex: 0,
-          labelInLegend: 'Tickets Estimados'
-        },
-
-        1: {
-          targetAxisIndex: 0,
-          labelInLegend: 'Estimados Presencial'
-        },
-
-
-        // -----------------------------------------
-        // ENTRADA
-        // -----------------------------------------
-
-        2: {
-          targetAxisIndex: 0,
-          labelInLegend: 'Entrada'
-        },
-
-
-        // -----------------------------------------
-        // RESUELTOS
-        // -----------------------------------------
-
-        3: {
-          targetAxisIndex: 0,
-          labelInLegend: 'Resueltos'
-        },
-
-
-        // -----------------------------------------
-        // OCC
-        // -----------------------------------------
-
+        0: { targetAxisIndex: 0, labelInLegend: 'Tickets Estimados' },
+        1: { targetAxisIndex: 0, labelInLegend: 'Estimados Presencial' },
+        2: { targetAxisIndex: 0, labelInLegend: 'Entrada' },
+        3: { targetAxisIndex: 0, labelInLegend: 'Resueltos' },
         4: {
-
           type: 'line',
-
           targetAxisIndex: 1,
-
-          /*
-            Sin curva suavizada.
-            La línea une directamente los valores diarios.
-          */
           curveType: 'none',
-
-          /*
-            Eliminamos los puntos.
-          */
           pointSize: 0,
-
           lineWidth: 2,
-
           labelInLegend: 'OCC'
-
         }
-
       },
 
-
-      /*
-        -------------------------------------------------------
-        LEYENDA
-        -------------------------------------------------------
-      */
-
-      legend: {
-        position: 'bottom'
-      },
-
-
-      /*
-        -------------------------------------------------------
-        ANCHO DE LAS BARRAS
-        -------------------------------------------------------
-      */
-
-      bar: {
-        groupWidth: '65%'
-      },
-
-
-      /*
-        -------------------------------------------------------
-        TOOLTIP
-        -------------------------------------------------------
-      */
-
-      tooltip: {
-        trigger: 'focus'
-      }
-
+      legend: { position: 'bottom' },
+      bar: { groupWidth: '85%' },
+      tooltip: { trigger: 'focus' }
     };
-
-
-    /*
-      ---------------------------------------------------------
-      CREAR GRÁFICO
-      ---------------------------------------------------------
-    */
 
     var chart = new google.visualization.ComboChart(
       document.getElementById('chart_google_1')
     );
 
-
     chart.draw(data, options);
-
   }
 </script>
 </head>
