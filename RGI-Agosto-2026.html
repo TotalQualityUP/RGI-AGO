@@ -458,13 +458,102 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
   </div>
 
   <figure class="viz">
-    <div class="viz-slot" data-viz="2">
-      <div class="viz-ph">
-        <span class="num">Gráfico 2</span>
-        <span class="t">Desvíos por temática y tipo</span>
-        <span class="h">Sugerido: barras horizontales de temáticas ordenadas por volumen, segmentadas por tipo de desvío, para que se vea Cursados arriba y el bloque arancelario como segundo foco.</span>
-      </div>
-    </div>
+<!-- Script para el Gráfico 2: Distribución de desvíos por temática -->
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart2);
+
+  function drawChart2() {
+
+    var data = google.visualization.arrayToDataTable([
+      ['Temática', 'Casos'],
+
+      ['Cursados', 31],
+      ['Cons. aranceles', 8],
+      ['Documentación', 8],
+      ['Facultad/otros', 5],
+      ['Sistemas', 5],
+      ['Trámites y certificados', 5],
+      ['Finales', 4],
+      ['Mov. académicos', 4],
+      ['Título', 4],
+      ['Becas y descuentos', 3],
+      ['Debito automático', 3],
+      ['Deportes', 3],
+      ['Equivalencias', 3],
+      ['Idiomas/intercambio', 3],
+      ['Admisión', 2],
+      ['Colación', 2],
+      ['Modificación de inscripción', 2],
+      ['Tribunal', 2],
+      ['Medios de pago', 1]
+    ]);
+
+    var options = {
+
+      title: 'Distribución de desvíos por temática – Agosto 2026',
+
+      height: 560,
+
+      backgroundColor: 'transparent',
+
+      pieHole: 0.45,
+
+      chartArea: {
+        left: 20,
+        top: 40,
+        width: '65%',
+        height: '82%'
+      },
+
+      colors: [
+        '#2a78d6',
+        '#8fc0f5',
+        '#a9cbed',
+        '#b8d4ed',
+        '#c4dbee',
+        '#d0e2f0',
+        '#dbe8f2',
+        '#e2ecf3',
+        '#e8eff4',
+        '#edf2f5',
+        '#d5d9dd',
+        '#c9ced3',
+        '#bdc3c9',
+        '#b1b8bf',
+        '#a5adb5',
+        '#99a2aa',
+        '#8d969f',
+        '#818b94',
+        '#757f89'
+      ],
+
+      pieSliceText: 'percentage',
+
+      pieSliceTextStyle: {
+        fontSize: 11
+      },
+
+      legend: {
+        position: 'right',
+        alignment: 'center',
+        textStyle: {
+          fontSize: 11
+        }
+      },
+
+      tooltip: {
+        trigger: 'focus'
+      }
+    };
+
+    var chart = new google.visualization.PieChart(
+      document.getElementById('chart_google_2')
+    );
+
+    chart.draw(data, options);
+  }
+</script>
     <figcaption><b>Gráfico 2.</b> Distribución de los 98 tickets auditados con desvío, por temática de la interacción y tipo de desvío. Fuente: auditoría de Capacitación.</figcaption>
   </figure>
 </section>
