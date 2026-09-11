@@ -220,13 +220,12 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 }
 </style>
 
-<!-- Script para el Gráfico 1 (Google Charts) con fechas alineadas a 0° -->
+<!-- Script para el Gráfico 1 (Google Charts) corregido -->
 <script type="text/javascript">
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(drawChart1);
 
   function drawChart1() {
-
     var rawData = [
       ['01/08', 116, 2, 287, 317, 0.8481],
       ['02/08', 142, 0, 264, 275, 0.9841],
@@ -262,105 +261,79 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
     ];
 
     var data = new google.visualization.DataTable();
-
-    // Tipo 'date' para un cálculo proporcional del eje horizontal
-    data.addColumn('date', 'Fecha');
+    data.addColumn('string', 'Fecha');
     data.addColumn('number', 'Tickets Estimados');
     data.addColumn('number', 'Estimados Presencial');
     data.addColumn('number', 'Entrada');
     data.addColumn('number', 'Resueltos');
     data.addColumn('number', 'OCC');
 
-    var ticks = [];
-
     for (var i = 0; i < rawData.length; i++) {
-      var partes = rawData[i][0].split('/');
-      var dia = parseInt(partes[0], 10);
-      var mes = parseInt(partes[1], 10) - 1; // Mes base 0
-      
-      var baseDate = new Date(2026, mes, dia);
-
-      // Posición 1: Estimaciones (00:00 hs)
-      data.addRow([new Date(2026, mes, dia, 0, 0), rawData[i][1], rawData[i][2], null, null, rawData[i][5]]);
-      
-      // Posición 2: Entrada (08:00 hs)
-      data.addRow([new Date(2026, mes, dia, 8, 0), null, null, rawData[i][3], null, rawData[i][5]]);
-      
-      // Posición 3: Resueltos (16:00 hs)
-      data.addRow([new Date(2026, mes, dia, 16, 0), null, null, null, rawData[i][4], rawData[i][5]]);
-
-      // Marcamos el tick exacto en la barra del centro (08:00 hs)
-      ticks.push({
-        v: new Date(2026, mes, dia, 8, 0),
-        f: rawData[i][0]
-      });
+      data.addRow([
+        rawData[i][0],
+        rawData[i][1],
+        rawData[i][2],
+        rawData[i][3],
+        rawData[i][4],
+        rawData[i][5]
+      ]);
     }
 
-    // Formato porcentual para OCC
     var formatter = new google.visualization.NumberFormat({ pattern: '0.0%' });
     formatter.format(data, 5);
 
     var options = {
       title: 'Estimaciones vs. Entrada, Resueltos y Ocupación (Agosto 2026)',
       height: 480,
-      isStacked: true,
+      isStacked: false, // Sin apilado global para no mezclar Entrada y Resueltos
       seriesType: 'bars',
       backgroundColor: 'transparent',
-
-      chartArea: {
-        width: '88%',
-        height: '70%',
-        left: 70,
-        top: 55
-      },
-
-      colors: [
-        '#2a78d6', // Tickets Estimados
-        '#8fc0f5', // Estimados Presencial
-        '#27ae60', // Entrada
-        '#f39c12', // Resueltos
-        '#c0392e'  // OCC
-      ],
-
+      chartArea: { width: '88%', height: '70%', left: 70, top: 55 },
+      colors: ['#2a78d6', '#8fc0f5', '#27ae60', '#f39c12', '#c0392e'],
       vAxes: {
         0: { title: 'Cantidad de Tickets', minValue: 0 },
         1: { title: '% Ocupación (OCC)', format: 'percent', minValue: 0, maxValue: 1 }
       },
-
       hAxis: {
         title: 'Días de Agosto',
-        ticks: ticks,
-        slantedText: false, // Texto horizontal a 0 grados
-        slantedTextAngle: 0,
-        gridlines: { color: 'transparent' },
-        textStyle: { fontSize: 9 }
+        slantedText: true,
+        slantedTextAngle: 45,
+        textStyle: { fontSize: 10 }
       },
-
       series: {
         0: { targetAxisIndex: 0, labelInLegend: 'Tickets Estimados' },
         1: { targetAxisIndex: 0, labelInLegend: 'Estimados Presencial' },
         2: { targetAxisIndex: 0, labelInLegend: 'Entrada' },
         3: { targetAxisIndex: 0, labelInLegend: 'Resueltos' },
-        4: {
-          type: 'line',
-          targetAxisIndex: 1,
-          curveType: 'none',
-          pointSize: 0,
-          lineWidth: 2,
-          labelInLegend: 'OCC'
-        }
+        4: { type: 'line', targetAxisIndex: 1, curveType: 'none', pointSize: 0, lineWidth: 2, labelInLegend: 'OCC' }
       },
-
       legend: { position: 'bottom' },
-      bar: { groupWidth: '85%' },
-      tooltip: { trigger: 'focus' }
+      bar: { groupWidth: '75%' }
     };
 
-    var chart = new google.visualization.ComboChart(
-      document.getElementById('chart_google_1')
-    );
+    // Para apilar SOLO las series 0 y 1 sin apilar Entrada y Resueltos,
+    // se crea una vista que suma el acumulado de la segunda estimación.
+    var view = new google.visualization.DataView(data);
+    view.setColumns([
+      0,
+      1, // Base: Tickets Estimados
+      {
+        type: 'number',
+        label: 'Estimados Presencial',
+        calc: function(dt, row) {
+          // Suma visual para lograr el efecto apilado sobre la serie 0
+          return dt.getValue(row, 1) + dt.getValue(row, 2);
+        }
+      },
+      3, // Entrada (Columna individual al lado)
+      4, // Resueltos (Columna individual al lado)
+      5  // OCC
+    ]);
 
-    chart.draw(data, options);
+    var chart = new google.visualization.ComboChart(document.getElementById('chart_google_1'));
+    
+    // Se sobreescribe el dibujo para usar la vista manipulada sin apilar todo el gráfico
+    chart.draw(view, options);
   }
 </script>
 </head>
