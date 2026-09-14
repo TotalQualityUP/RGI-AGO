@@ -160,7 +160,9 @@ figure.viz{margin:30px 0 0}
 .viz-slot object,.viz-slot iframe,.viz-slot img,
 .viz-slot .tableauPlaceholder,.viz-slot tableau-viz{max-width:100%!important; width:100%!important}
 .viz-slot img{height:auto; display:block}
-.viz-slot.embed{background:#fff; padding:6px}
+.viz-slot.embed{background:#fff; padding:6px; display:block; min-height:0; overflow:hidden}
+.viz-slot.embed .tableauPlaceholder{width:100%!important; max-width:100%!important; overflow:hidden}
+.viz-slot.embed object.tableauViz{max-width:none!important; transform-origin:top left}
 .viz-ph{
   flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:8px; text-align:center; padding:32px; margin:10px;
@@ -541,20 +543,34 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 <script>
 /* 1. Embeds de Tableau Public: se dimensionan al ancho del slot y se reajustan al redimensionar. */
 (function(){
+  /* Hojas fluidas → ratio (se reajustan solas al ancho disponible).
+     Dashboards de tamaño fijo → w/h nativos: se escalan con transform para
+     que entren enteros, en vez de mostrar scroll interno. */
   var vizs = [
-    {id:'viz_g1', ratio:0.45},     /* Gráfico 1 · serie diaria, hoja fluida */
-    {id:'viz_g2', ratio:0.4333},   /* Gráfico 2 · torta + leyenda, 1200 x 520 */
-    {id:'viz_g3', ratio:0.38},     /* Gráfico 3 · títulos, 1000 x 380 */
-    {id:'viz_g4', ratio:0.407}     /* Gráfico 4 · macros de aprobación, 1000 x 407 */
+    {id:'viz_g1', ratio:0.45},          /* Gráfico 1 · hoja, fluida */
+    {id:'viz_g2', w:1200, h:520},       /* Gráfico 2 · dashboard fijo */
+    {id:'viz_g3', w:1000, h:380},       /* Gráfico 3 · dashboard fijo */
+    {id:'viz_g4', w:1000, h:407}        /* Gráfico 4 · dashboard fijo */
   ];
   var activos = [];
+
+  function fijar(el, prop, val){ el.style.setProperty(prop, val, 'important'); }
 
   function dimensionar(){
     activos.forEach(function(v){
       var ancho = v.div.offsetWidth;
       if(!ancho) return;
-      v.obj.style.width = '100%';
-      v.obj.style.height = Math.round(ancho * v.ratio) + 'px';
+      if(v.w){
+        var escala = Math.min(1, ancho / v.w);
+        fijar(v.obj, 'width',  v.w + 'px');
+        fijar(v.obj, 'height', v.h + 'px');
+        v.obj.style.transformOrigin = 'top left';
+        v.obj.style.transform = 'scale(' + escala + ')';
+        v.div.style.height = Math.round(v.h * escala) + 'px';
+      } else {
+        fijar(v.obj, 'width', '100%');
+        fijar(v.obj, 'height', Math.round(ancho * v.ratio) + 'px');
+      }
     });
   }
 
@@ -563,7 +579,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
     if(!div) return;
     var obj = div.getElementsByTagName('object')[0];
     if(!obj) return;
-    activos.push({div:div, obj:obj, ratio:v.ratio});
+    activos.push({div:div, obj:obj, ratio:v.ratio, w:v.w, h:v.h});
   });
 
   if(!activos.length) return;
