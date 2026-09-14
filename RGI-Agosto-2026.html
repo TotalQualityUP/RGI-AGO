@@ -32,15 +32,6 @@ body{
 }
 .wrap{max-width:1080px; margin:0 auto; padding:0 24px}
 
-/* ── Barra de instrucciones (no se imprime) ─────────────────────── */
-.howto{background:#fdf4e0; color:#5c4514; font-size:13.5px; line-height:1.6;
-  border-bottom:2px dashed #e6cf9b}
-.howto .wrap{padding-top:16px; padding-bottom:16px}
-.howto h2{margin:0 0 6px; font-size:13.5px; color:#4a3608; letter-spacing:.02em}
-.howto p{margin:3px 0; max-width:92ch}
-.howto b{color:#4a3608}
-.howto code{background:#f3e4c2; padding:1px 5px; border-radius:3px; font-size:12.5px}
-
 /* ── Encabezado ─────────────────────────────────────────────────── */
 .hero{background:var(--navy); color:#fff; padding:52px 0 0}
 .hero .eyebrow{
@@ -212,7 +203,7 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 @page{size:A4; margin:14mm}
 @media print{
   html,body{background:#fff}
-  .howto,.nav{display:none!important}
+  .nav{display:none!important}
   .wrap{max-width:none; padding:0}
   .hero{background:#fff; color:var(--ink); padding:0 0 8px; border-bottom:2px solid var(--ink)}
   .hero .lede{color:var(--ink-2)}
@@ -229,14 +220,14 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 </head>
 <body>
 
-<div class="howto">
-  <div class="wrap">
-    <h2>Notas de armado (este bloque no se imprime · borralo cuando esté listo)</h2>
-    <p><b>Gráficos 1 y 2:</b> ya están embebidos desde Tableau Public. Si republicás con otro nombre de libro u hoja, hay que actualizar el <code>param name='name'</code> de cada bloque.</p>
-    <p><b>Gráficos 3 y 4:</b> pendientes. En cada uno hay un <b>&lt;div class="viz-slot"&gt;</b> con recuadro punteado: pegás adentro el código de <b>Compartir → Insertar código</b> y el recuadro desaparece solo.</p>
-    <p><b>Si lo vas a imprimir o pasar a PDF</b>, los embeds no se renderizan: exportá cada gráfico como PNG y reemplazá el bloque por <code>&lt;img src="graficos/01-....png" alt="..."&gt;</code>.</p>
-  </div>
-</div>
+<!-- Notas de mantenimiento (no se muestran):
+     · Los cuatro gráficos vienen embebidos de Tableau Public. Si se republica un libro
+       con otro nombre, actualizar su <param name="name"> y la ruta de static_image.
+     · Las proporciones de cada embed están en el bloque vizs del script, al final:
+       ratio = alto ÷ ancho del dashboard en Tableau.
+     · Para imprimir o pasar a PDF, los embeds no se renderizan: exportar cada gráfico
+       como PNG y reemplazar el bloque por <img src="graficos/01-....png" alt="...">.
+-->
 
 <header class="hero">
   <div class="wrap">
@@ -432,18 +423,28 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
   </div>
 
   <figure class="viz">
-    <div class="viz-slot" data-viz="3">
-      <!-- ══════════ GRÁFICO 3 ══════════
-           Pegá acá el código embed de Tableau (Compartir → Insertar código).
-           Alternativa estática: <img src="graficos/03-titulos.png" alt="Altas, finalizados y stock de trámites">
-      -->
-      <div class="viz-ph">
-        <span class="num">Gráfico 3</span>
-        <span class="t">Altas, finalizados y stock de trámites</span>
-        <span class="h">Columnas de altas y finalizados por mes (mayo a agosto) con la línea del stock encima; o el detalle diario de agosto, para que se vea la concentración del 24 al 28.</span>
+    <div class="viz-slot embed" data-viz="3">
+      <!-- ══════════ GRÁFICO 3 · Tableau Public ══════════ -->
+      <div class="tableauPlaceholder" id="viz_g3" style="position:relative">
+        <noscript><a href="#"><img alt="Altas, finalizados y stock de trámites de títulos" src="https://public.tableau.com/static/images/tt/tts_17893999157490/Dashboard1/1_rss.png" style="border:none"></a></noscript>
+        <object class="tableauViz" style="display:none;">
+          <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
+          <param name="embed_code_version" value="3" />
+          <param name="site_root" value="" />
+          <param name="name" value="tts_17893999157490&#47;Dashboard1" />
+          <param name="tabs" value="no" />
+          <param name="toolbar" value="no" />
+          <param name="static_image" value="https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;tt&#47;tts_17893999157490&#47;Dashboard1&#47;1.png" />
+          <param name="animate_transition" value="yes" />
+          <param name="display_static_image" value="yes" />
+          <param name="display_spinner" value="yes" />
+          <param name="display_overlay" value="yes" />
+          <param name="display_count" value="no" />
+          <param name="language" value="es-ES" />
+        </object>
       </div>
     </div>
-    <figcaption><b>Gráfico 3.</b> Movimiento de trámites de títulos (ID 10) y evolución del stock pendiente. Fuente: pasos de trámites · informes de Tesorería, SAA y Entrega de Títulos.</figcaption>
+    <figcaption><b>Gráfico 3.</b> Movimiento de trámites de títulos (ID 10 y 54) y evolución del stock pendiente, de mayo a agosto. Mayo incluye trámites iniciados antes del 4/5, primer día del archivo. Fuente: pasos de trámites · informes de Tesorería, SAA y Entrega de Títulos.</figcaption>
   </figure>
 </section>
 
@@ -503,18 +504,28 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
   </div>
 
   <figure class="viz">
-    <div class="viz-slot" data-viz="4">
-      <!-- ══════════ GRÁFICO 4 ══════════
-           Pegá acá el código embed de Tableau.
-           Alternativa estática: <img src="graficos/04-macros.png" alt="Uso de macros de aprobación">
-      -->
-      <div class="viz-ph">
-        <span class="num">Gráfico 4</span>
-        <span class="t">Evolución semanal del circuito con aprobación</span>
-        <span class="h">Línea del % semanal de «Para aprobar» sobre el total, con la banda 5,6 %–7,1 % de fondo y la referencia del promedio del mes (6,2 %).</span>
+    <div class="viz-slot embed" data-viz="4">
+      <!-- ══════════ GRÁFICO 4 · Tableau Public ══════════ -->
+      <div class="tableauPlaceholder" id="viz_g4" style="position:relative">
+        <noscript><a href="#"><img alt="Participación semanal del circuito con aprobación" src="https://public.tableau.com/static/images/pa/paraaprobar/Dashboard1/1_rss.png" style="border:none"></a></noscript>
+        <object class="tableauViz" style="display:none;">
+          <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />
+          <param name="embed_code_version" value="3" />
+          <param name="site_root" value="" />
+          <param name="name" value="paraaprobar&#47;Dashboard1" />
+          <param name="tabs" value="no" />
+          <param name="toolbar" value="no" />
+          <param name="static_image" value="https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;pa&#47;paraaprobar&#47;Dashboard1&#47;1.png" />
+          <param name="animate_transition" value="yes" />
+          <param name="display_static_image" value="yes" />
+          <param name="display_spinner" value="yes" />
+          <param name="display_overlay" value="yes" />
+          <param name="display_count" value="no" />
+          <param name="language" value="es-ES" />
+        </object>
       </div>
     </div>
-    <figcaption><b>Gráfico 4.</b> Participación semanal de las macros de aprobación sobre el total aplicado. Fuente: Zendesk · macros_aplicadas.</figcaption>
+    <figcaption><b>Gráfico 4.</b> Aplicaciones de la macro «Para aprobar» por semana (barras) y su participación sobre el total aplicado (línea). S5 abarca solo 3 días, del 29 al 31. Fuente: Zendesk · macros_aplicadas.</figcaption>
   </figure>
 </section>
 
@@ -531,8 +542,10 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 /* 1. Embeds de Tableau Public: se dimensionan al ancho del slot y se reajustan al redimensionar. */
 (function(){
   var vizs = [
-    {id:'viz_g1', ratio:0.45},   /* Gráfico 1 · serie diaria, formato apaisado */
-    {id:'viz_g2', ratio:0.46}    /* Gráfico 2 · torta + leyenda, 1200 x 547 */
+    {id:'viz_g1', ratio:0.45},    /* Gráfico 1 · serie diaria, formato apaisado */
+    {id:'viz_g2', ratio:0.46},    /* Gráfico 2 · torta + leyenda, 1200 x 547 */
+    {id:'viz_g3', ratio:0.587},   /* Gráfico 3 · títulos, 1000 x 587 */
+    {id:'viz_g4', ratio:0.407}    /* Gráfico 4 · macros de aprobación, 1000 x 407 */
   ];
   var activos = [];
 
