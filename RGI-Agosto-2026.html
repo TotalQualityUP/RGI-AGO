@@ -161,8 +161,7 @@ figure.viz{margin:30px 0 0}
 .viz-slot .tableauPlaceholder,.viz-slot tableau-viz{max-width:100%!important; width:100%!important}
 .viz-slot img{height:auto; display:block}
 .viz-slot.embed{background:#fff; padding:6px; display:block; min-height:0; overflow:hidden}
-.viz-slot.embed .tableauPlaceholder{width:100%!important; max-width:100%!important; overflow:hidden}
-.viz-slot.embed object.tableauViz{max-width:none!important; transform-origin:top left}
+.viz-slot.embed .tableauPlaceholder{width:100%!important; max-width:100%!important}
 .viz-ph{
   flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:8px; text-align:center; padding:32px; margin:10px;
@@ -225,8 +224,9 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 <!-- Notas de mantenimiento (no se muestran):
      · Los cuatro gráficos vienen embebidos de Tableau Public. Si se republica un libro
        con otro nombre, actualizar su <param name="name"> y la ruta de static_image.
-     · Las proporciones de cada embed están en el bloque vizs del script, al final:
-       ratio = alto ÷ ancho del dashboard en Tableau.
+     · Los cuatro dashboards se publican con Tamaño = Automático en Tableau. Así se
+       adaptan a la caja del reporte. Si uno vuelve a tamaño fijo, muestra scroll interno.
+     · El alto de los cuatro recuadros se controla con la constante ALTO del script.
      · Para imprimir o pasar a PDF, los embeds no se renderizan: exportar cada gráfico
        como PNG y reemplazar el bloque por <img src="graficos/01-....png" alt="...">.
 -->
@@ -543,43 +543,29 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
 <script>
 /* 1. Embeds de Tableau Public: se dimensionan al ancho del slot y se reajustan al redimensionar. */
 (function(){
-  /* Hojas fluidas → ratio (se reajustan solas al ancho disponible).
-     Dashboards de tamaño fijo → w/h nativos: se escalan con transform para
-     que entren enteros, en vez de mostrar scroll interno. */
-  var vizs = [
-    {id:'viz_g1', ratio:0.45},          /* Gráfico 1 · hoja, fluida */
-    {id:'viz_g2', w:1200, h:520},       /* Gráfico 2 · dashboard fijo */
-    {id:'viz_g3', w:1000, h:380},       /* Gráfico 3 · dashboard fijo */
-    {id:'viz_g4', w:1000, h:407}        /* Gráfico 4 · dashboard fijo */
-  ];
+  /* Los cuatro gráficos se publican con tamaño AUTOMÁTICO en Tableau, así que
+     se adaptan a la caja que les demos: mismo ancho y mismo alto para los cuatro.
+     Si algún día uno vuelve a tamaño fijo, va a mostrar scroll interno. */
+  var ALTO = 480;
+  var ids = ['viz_g1','viz_g2','viz_g3','viz_g4'];
   var activos = [];
 
   function fijar(el, prop, val){ el.style.setProperty(prop, val, 'important'); }
 
   function dimensionar(){
     activos.forEach(function(v){
-      var ancho = v.div.offsetWidth;
-      if(!ancho) return;
-      if(v.w){
-        var escala = Math.min(1, ancho / v.w);
-        fijar(v.obj, 'width',  v.w + 'px');
-        fijar(v.obj, 'height', v.h + 'px');
-        v.obj.style.transformOrigin = 'top left';
-        v.obj.style.transform = 'scale(' + escala + ')';
-        v.div.style.height = Math.round(v.h * escala) + 'px';
-      } else {
-        fijar(v.obj, 'width', '100%');
-        fijar(v.obj, 'height', Math.round(ancho * v.ratio) + 'px');
-      }
+      if(!v.div.offsetWidth) return;
+      fijar(v.obj, 'width', '100%');
+      fijar(v.obj, 'height', ALTO + 'px');
     });
   }
 
-  vizs.forEach(function(v){
-    var div = document.getElementById(v.id);
+  ids.forEach(function(id){
+    var div = document.getElementById(id);
     if(!div) return;
     var obj = div.getElementsByTagName('object')[0];
     if(!obj) return;
-    activos.push({div:div, obj:obj, ratio:v.ratio, w:v.w, h:v.h});
+    activos.push({div:div, obj:obj});
   });
 
   if(!activos.length) return;
