@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RGI — Septiembre 2026</title>
+<style>
+:root{
+  --bg:#f4f3ef;
+  --card:#fff;
+  --navy:#132436;
+  --ink:#16160f;
+  --ink-2:#3f3e38;
+  --ink-3:#7c7b73;
+  --rule:#e5e3dc;
+  --rule-2:#cfcdc4;
+  --accent:#2a78d6;
+  --accent-dk:#1c5cab;
+  --accent-lt:#8fc0f5;
+  --accent-soft:#eff5fd;
+  --pos:#0a6b32;
+  --neg:#c0392e;
+  --sans:"Inter","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --nav-h:52px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; background:var(--bg)}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:16.5px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px; margin:0 auto; padding:0 24px}
+
+/* ── Encabezado ─────────────────────────────────────────────────── */
+.hero{background:var(--navy); color:#fff; padding:52px 0 0}
+.hero .eyebrow{
+  margin:0 0 10px; font-size:12px; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--accent-lt);
+}
+.hero h1{
+  margin:0 0 14px; font-size:clamp(32px,5vw,46px); line-height:1.08;
+  letter-spacing:-.025em; font-weight:680;
+}
+.hero .lede{margin:0 0 34px; max-width:66ch; font-size:17.5px; line-height:1.6; color:#c8d2dc}
+.hero-stats{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border-top:1px solid rgba(255,255,255,.16);
+}
+.hero-stats div{padding:18px 20px 24px; border-right:1px solid rgba(255,255,255,.16)}
+.hero-stats div:first-child{padding-left:0}
+.hero-stats div:last-child{border-right:0}
+.hero-stats .l{display:block; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:#9fb0bf; font-weight:600; margin-bottom:6px}
+.hero-stats .v{display:block; font-size:30px; font-weight:640; letter-spacing:-.02em; line-height:1}
+
+/* ── Navegación ─────────────────────────────────────────────────── */
+.nav{
+  position:sticky; top:0; z-index:20; height:var(--nav-h);
+  background:rgba(244,243,239,.93); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule);
+}
+.nav .wrap{display:flex; align-items:center; gap:4px; height:100%; overflow-x:auto; scrollbar-width:none}
+.nav .wrap::-webkit-scrollbar{display:none}
+.nav a{
+  flex:0 0 auto; display:flex; align-items:center; gap:8px;
+  padding:7px 13px; border-radius:100px; text-decoration:none;
+  font-size:13.5px; font-weight:600; color:var(--ink-2); white-space:nowrap;
+  transition:background .15s, color .15s;
+}
+.nav a .i{font-size:11px; font-weight:700; color:var(--ink-3); letter-spacing:.04em}
+.nav a:hover{background:#e9e7e0}
+.nav a.on{background:var(--accent); color:#fff}
+.nav a.on .i{color:rgba(255,255,255,.7)}
+
+/* ── Secciones ──────────────────────────────────────────────────── */
+main{padding:32px 0 8px}
+.sec{
+  background:var(--card); border:1px solid var(--rule); border-radius:12px;
+  padding:34px 40px 38px; margin-bottom:26px; scroll-margin-top:calc(var(--nav-h) + 16px);
+}
+.sec-head{display:flex; align-items:flex-start; gap:18px; margin-bottom:6px}
+.sec-num{
+  font-size:40px; font-weight:700; line-height:.9; color:#e6e4dc;
+  letter-spacing:-.03em; flex:0 0 auto; margin-top:2px;
+}
+.kicker{margin:0 0 2px; font-size:11.5px; font-weight:700; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent)}
+h2{margin:0; font-size:clamp(23px,3vw,28px); line-height:1.18; letter-spacing:-.02em; font-weight:660}
+.sec-lede{margin:10px 0 24px; max-width:90ch; font-size:17px; color:var(--ink-2)}
+
+/* ── Indicadores ────────────────────────────────────────────────── */
+.kpis{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  background:#faf9f5; border:1px solid var(--rule); border-radius:10px;
+  margin:0 0 26px; overflow:hidden;
+}
+.kpis.k3{grid-template-columns:repeat(3,1fr)}
+.kpis.k6{grid-template-columns:repeat(3,1fr)}
+.kpi{padding:15px 18px 17px; border-right:1px solid var(--rule)}
+.kpi:last-child{border-right:0}
+.kpis.k6 .kpi:nth-child(3n){border-right:0}
+.kpis.k6 .kpi:nth-child(-n+3){border-bottom:1px solid var(--rule)}
+.kpi .l{display:block; font-size:11.5px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:650; margin-bottom:5px; line-height:1.3; min-height:2.6em}
+.kpi .v{display:block; font-size:27px; font-weight:640; line-height:1.05; letter-spacing:-.025em}
+.kpi .v.sm{font-size:20px; letter-spacing:-.015em}
+.kpi .n{display:block; font-size:12.5px; color:var(--ink-2); margin-top:6px; line-height:1.4}
+.up{color:var(--pos)} .down{color:var(--neg)}
+
+/* ── Texto ──────────────────────────────────────────────────────── */
+.prose{max-width:none}
+.prose p{
+  margin:0 0 16px;
+  text-align:justify;
+  text-justify:inter-word;
+  hyphens:auto;
+  -webkit-hyphens:auto;
+}
+.prose p:last-child{margin-bottom:0}
+.prose b{font-weight:650; color:var(--accent)}
+.sec-lede b{font-weight:650; color:var(--accent)}
+
+/* ── Tablas ─────────────────────────────────────────────────────── */
+.tables{display:grid; gap:22px; margin:26px 0 0}
+.tables.two{grid-template-columns:minmax(0,320px) minmax(0,1fr); align-items:start}
+.tbl{overflow-x:auto}
+.tbl h3{margin:0 0 9px; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:700}
+table{width:100%; border-collapse:collapse; font-size:14.5px}
+th,td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--rule); vertical-align:baseline}
+thead th{font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3);
+  font-weight:700; border-bottom:1px solid var(--rule-2); white-space:nowrap; padding-bottom:7px}
+td.n,th.n{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:#faf9f5}
+tr.total td{font-weight:650; border-top:1px solid var(--rule-2); background:#faf9f5}
+tr.total:hover td{background:#f5f3ed}
+.grp{color:var(--ink-3); font-size:13px; white-space:nowrap}
+.note{margin:10px 0 0; font-size:13px; color:var(--ink-3)}
+
+/* ── Nota metodológica ──────────────────────────────────────────── */
+.nota{
+  margin:26px 0 0; padding:18px 22px; background:var(--accent-soft);
+  border-left:3px solid var(--accent); border-radius:0 8px 8px 0;
+  font-size:14.5px; line-height:1.6; color:var(--ink-2); max-width:none;
+}
+.nota h3{margin:0 0 6px; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--accent-dk); font-weight:700}
+.nota p{margin:0 0 9px; text-align:justify; hyphens:auto}
+.nota p:last-child{margin:0}
+
+/* ── Slot de visualización ──────────────────────────────────────── */
+figure.viz{margin:30px 0 0}
+.viz-slot{
+  position:relative; min-height:420px; display:flex; align-items:stretch;
+  background:#faf9f5; border:1px solid var(--rule); border-radius:10px; overflow:hidden;
+}
+.viz-slot > *{max-width:100%}
+.viz-slot object,.viz-slot iframe,.viz-slot img,
+.viz-slot .tableauPlaceholder,.viz-slot tableau-viz{max-width:100%!important; width:100%!important}
+.viz-slot img{height:auto; display:block}
+.viz-slot.embed{background:#fff; padding:6px; display:block; min-height:0; overflow:hidden}
+.viz-slot.embed .tableauPlaceholder{width:100%!important; max-width:100%!important}
+.viz-ph{
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; text-align:center; padding:32px; margin:10px;
+  border:1.5px dashed var(--rule-2); border-radius:6px;
+}
+.viz-ph .num{font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+  font-weight:700; color:var(--accent)}
+.viz-ph .t{font-size:19px; font-weight:620; color:var(--ink-2); letter-spacing:-.01em}
+.viz-ph .h{font-size:14px; color:var(--ink-3); max-width:62ch; line-height:1.5}
+figcaption{margin-top:11px; font-size:13px; color:var(--ink-3); line-height:1.5; max-width:86ch}
+figcaption b{color:var(--ink-2); font-weight:650}
+
+/* ── Pie ────────────────────────────────────────────────────────── */
+footer{border-top:1px solid var(--rule); margin-top:14px; padding:26px 0 48px;
+  font-size:13px; color:var(--ink-3)}
+footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width:840px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .hero{padding-top:36px}
+  .hero-stats{grid-template-columns:repeat(2,1fr)}
+  .hero-stats div{padding:14px 16px 18px}
+  .hero-stats div:nth-child(2n){border-right:0}
+  .hero-stats div:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.16)}
+  .hero-stats div:nth-child(3){padding-left:0}
+  .hero-stats .l{min-height:2.6em}
+  .sec{padding:26px 20px 30px; border-radius:10px}
+  .sec-num{font-size:30px}
+  .kpis,.kpis.k3,.kpis.k6{grid-template-columns:repeat(2,1fr)}
+  .kpi{border-bottom:1px solid var(--rule)}
+  .kpi:nth-child(2n){border-right:0}
+  .tables.two{grid-template-columns:1fr}
+  .viz-slot{min-height:260px}
+  .prose p{text-align:left; hyphens:none}
+}
+
+/* ── Impresión ──────────────────────────────────────────────────── */
+@page{size:A4; margin:14mm}
+@media print{
+  html,body{background:#fff}
+  .nav{display:none!important}
+  .wrap{max-width:none; padding:0}
+  .hero{background:#fff; color:var(--ink); padding:0 0 8px; border-bottom:2px solid var(--ink)}
+  .hero .lede{color:var(--ink-2)}
+  .hero .eyebrow{color:var(--ink-3)}
+  .hero-stats{border-top:1px solid var(--rule)}
+  .hero-stats div{border-right:1px solid var(--rule)}
+  .hero-stats .l{color:var(--ink-3)}
+  .sec{border:0; padding:0; margin:0 0 18px; break-before:page; page-break-before:always}
+  .kpis,table,figure.viz,.nota{break-inside:avoid; page-break-inside:avoid}
+  .viz-slot{min-height:115mm}
+  footer{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Notas de mantenimiento (no se muestran):
+     · Cada gráfico tiene un recuadro guía. Para insertar el de Tableau Public (Compartir → Insertar código),
+       pegar dentro del <div class="viz-slot"> correspondiente solo el bloque <div class='tableauPlaceholder' ...>…</div>.
+       El script de abajo carga la API de Tableau, dimensiona todos los embeds y saca el recuadro guía.
+       Si se pega también el <script> que trae el código de Tableau, no pasa nada: la API se carga una sola vez.
+     · Si se republican con datos de septiembre los libros de agosto (desvios/Hoja1 para desvíos por temática,
+       tts_17893999157490/Hoja1 para títulos), se pueden reutilizar los bloques del HTML de agosto.
+     · Los dashboards se publican con Tamaño = Automático en Tableau, así se adaptan a la caja del reporte.
+       El alto de los recuadros se controla con la constante ALTO del script.
+     · Para imprimir o pasar a PDF, los embeds no se renderizan: exportar cada gráfico
+       como PNG y reemplazar el bloque por <img src="graficos/01-....png" alt="...">.
+-->
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Reporte de Gestión Integral</p>
+    <h1>Septiembre 2026</h1>
+    <p class="lede">Septiembre fue un mes de menor demanda en la atención. Usamos ese margen para mejorar la calidad, anticipar la inscripción a finales y ordenar el circuito de títulos, con la Colación de noviembre como prioridad institucional.</p>
+    <div class="hero-stats">
+      <div><span class="l">Atenciones del mes</span><span class="v">9.918</span></div>
+      <div><span class="l">Desvíos registrados</span><span class="v">41</span></div>
+      <div><span class="l">Tribunales no asignados</span><span class="v">−46,5 %</span></div>
+      <div><span class="l">Títulos impresos</span><span class="v">139</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="#clima"><span class="i">01</span> Clima del mes</a>
+    <a href="#mejora"><span class="i">02</span> Mejora continua</a>
+    <a href="#tribunales"><span class="i">03</span> Finales por tribunal</a>
+    <a href="#colacion"><span class="i">04</span> Títulos y Colación</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ═══════════════════════ 01 · CLIMA DEL MES ═══════════════════════ -->
+<section class="sec" id="clima">
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <div>
+      <p class="kicker">Atención al alumno</p>
+      <h2>Clima del mes: menos demanda, foco en prepararse</h2>
+    </div>
+  </div>
+  <p class="sec-lede">Con el segundo semestre ya en marcha, la demanda de atención bajó con fuerza y usamos ese margen para ordenar, capacitar y anticipar.</p>
+
+  <div class="kpis">
+    <div class="kpi"><span class="l">Atenciones presenciales</span><span class="v">3.073</span><span class="n">−35,8 % vs. agosto (4.787)</span></div>
+    <div class="kpi"><span class="l">Atenciones online</span><span class="v">6.845</span><span class="n">−44,3 % vs. agosto (12.300)</span></div>
+    <div class="kpi"><span class="l">Total de atenciones</span><span class="v">9.918</span><span class="n">−42,0 % vs. agosto (17.087)</span></div>
+    <div class="kpi"><span class="l">Conversaciones del Agente IA</span><span class="v">1.643</span><span class="n">−46,9 % vs. agosto (3.092)</span></div>
+  </div>
+
+  <div class="prose">
+    <p>Las atenciones presenciales bajaron de <b>4.787</b> en agosto a <b>3.073</b> en septiembre (<b>−35,8&nbsp;%</b>) y las online, de <b>12.300</b> a <b>6.845</b> (<b>−44,3&nbsp;%</b>). En total fueron <b>9.918</b> atenciones, un <b>42&nbsp;%</b> menos que el mes anterior. La baja responde a la estabilización de la actividad académica después del inicio del segundo semestre y se repitió en otros canales: el Agente IA pasó de <b>3.092</b> a <b>1.643</b> conversaciones (<b>−47&nbsp;%</b>) y Entrega de Títulos imprimió dos tercios menos trámites que en agosto. Los temas más consultados fueron aranceles, documentación y cursados.</p>
+    <p>Las áreas usaron ese margen para revisar procesos y prepararse para lo que viene. En palabras de Front Service: «Se reconoció la importancia de aprovechar los períodos de menor actividad para revisar procesos, ordenar prioridades y fortalecer la preparación del equipo para futuras etapas de mayor requerimiento».</p>
+    <p>Fue un mes de orden y consolidación. Los puntos a mejorar estuvieron en la consistencia de la atención, con reaperturas todavía altas, y en la coordinación con otras áreas y proveedores: Obras Menores, Soporte Técnico, PeopleSoft y medios de pago. El pendiente principal es completar la regularización de títulos antes de la Colación.</p>
+  </div>
+
+  <div class="tables">
+    <div class="tbl">
+      <h3>Atenciones · agosto vs. septiembre</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Canal</th>
+            <th class="n">Agosto</th>
+            <th class="n">Septiembre</th>
+            <th class="n">Diferencia</th>
+            <th class="n">Variación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Presencial</td><td class="n">4.787</td><td class="n">3.073</td><td class="n">−1.714</td><td class="n">−35,8 %</td></tr>
+          <tr><td>Online</td><td class="n">12.300</td><td class="n">6.845</td><td class="n">−5.455</td><td class="n">−44,3 %</td></tr>
+          <tr class="total"><td>Total</td><td class="n">17.087</td><td class="n">9.918</td><td class="n">−7.169</td><td class="n">−42,0 %</td></tr>
+        </tbody>
+      </table>
+      <p class="note">La atención presencial bajó menos que la online: pasó del 28,0 % al 31,0 % del total.</p>
+    </div>
+  </div>
+
+  <figure class="viz">
+    <div class="viz-slot embed" data-viz="1">
+      <div class='tableauPlaceholder' id='viz1792011828178' style='position: relative'><noscript><a href='#'><img alt='Hoja 3 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Gr&#47;Grfico1NiveldeActividad&#47;Hoja3&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /><param name='embed_code_version' value='3' /><param name='site_root' value='' /><param name='name' value='Grfico1NiveldeActividad&#47;Hoja3' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Gr&#47;Grfico1NiveldeActividad&#47;Hoja3&#47;1.png' /><param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='es-ES' /></object></div>
+    </div>
+    <figcaption><b>Gráfico 1.</b> Nivel de actividad por semana calendario: atenciones presenciales y online, trámites de títulos por estado de aprobación y ocupancia de los asesores. Fuente: registro de atenciones · pasos de trámites · evolutivo de ocupancia.</figcaption>
+  </figure>
+</section>
+
+<!-- ═══════════════════════ 02 · MEJORA CONTINUA ═══════════════════════ -->
+<section class="sec" id="mejora">
+  <div class="sec-head">
+    <span class="sec-num">02</span>
+    <div>
+      <p class="kicker">Calidad · Capacitación</p>
+      <h2>Mejora continua: capacitar sobre lo que muestran los desvíos</h2>
+    </div>
+  </div>
+  <p class="sec-lede">El tiempo que liberó la menor demanda fue a la calidad de atención. Capacitación trabajó sobre los mismos temas que concentran los desvíos del mes: personalizar la respuesta, leer el caso completo y cargar bien los trámites.</p>
+
+  <div class="kpis">
+    <div class="kpi"><span class="l">Desvíos registrados</span><span class="v">41</span><span class="n">37 en reaperturas · 4 no conformidades</span></div>
+    <div class="kpi"><span class="l">Personalización</span><span class="v">39,0 %</span><span class="n">16 casos; 43,2 % sin contar NC</span></div>
+    <div class="kpi"><span class="l">Personalización y distracción</span><span class="v">65,9 %</span><span class="n">Dos de cada tres desvíos son de forma</span></div>
+    <div class="kpi"><span class="l">Resolución automática del Agente IA</span><span class="v up">51 %</span><span class="n">45,08 % en agosto</span></div>
+  </div>
+
+  <div class="prose">
+    <p>El eje del mes fueron los talleres de complementación técnica: comunicación escrita, comunicación interpersonal, gestión de situaciones difíciles y calidad operativa, más un taller integral para los nuevos ingresos. Se sumaron capacitaciones específicas en Admisiones, Teléfono y Tesorería, en el seguimiento de mails y en el acompañamiento en sede, el análisis de tickets de primer, tercer y sexto mes, y la actualización de los materiales de inducción. El criterio, en palabras del área, es que «la capacitación debe avanzar cada vez más hacia una lógica práctica, aplicada y sostenida en el tiempo», trabajando tanto los procedimientos como las habilidades: comunicación, criterio de atención y manejo de situaciones difíciles.</p>
+    <p>En septiembre registramos <b>41 desvíos</b>: <b>37</b> detectados en reaperturas y <b>4 no conformidades</b> informadas por DA, PyGA y la SAA. Como en agosto, el problema principal es de forma: la personalización de la respuesta explica <b>16 casos (39,0&nbsp;%)</b> y, junto con la distracción, suma <b>dos de cada tres desvíos</b>. En esos casos la información para responder bien estaba disponible, pero la respuesta no contestó exactamente lo que el alumno preguntaba o pasó por alto lo que ya figuraba en el hilo o en una nota interna. Cuando el desvío tiene un tema identificable, coincide con la agenda del mes: inscripción a tribunales, analíticos y títulos, aranceles y carga de trámites.</p>
+    <p>Front Service acompañó este trabajo con devoluciones individuales y, tras la supervisión, desvinculó a los asesores que seguían sin alcanzar el estándar mínimo. En los canales digitales, el Agente IA resolvió de forma automática el <b>51&nbsp;%</b> de las conversaciones (<b>45&nbsp;%</b> en agosto). Lo que falta es consistencia, y las reaperturas siguen siendo el principal desafío de los asesores de DA. Para octubre, los talleres continúan con foco en la personalización de respuestas y la adaptación de macros, la lectura completa del hilo y de los antecedentes en Zendesk, la verificación de documentación y la identificación correcta de trámites y derivaciones.</p>
+  </div>
+
+  <div class="tables">
+    <div class="tbl">
+      <h3>Distribución por tipo de desvío</h3>
+      <table>
+        <thead><tr><th>Tipo de desvío</th><th class="n">Casos</th><th class="n">% del total</th><th class="n">% sin NC</th></tr></thead>
+        <tbody>
+          <tr><td>Personalización de la respuesta</td><td class="n">16</td><td class="n">39,0 %</td><td class="n">43,2 %</td></tr>
+          <tr><td>Distracción</td><td class="n">11</td><td class="n">26,8 %</td><td class="n">29,7 %</td></tr>
+          <tr><td>Capacitación</td><td class="n">10</td><td class="n">24,4 %</td><td class="n">27,0 %</td></tr>
+          <tr><td>NC (informadas por otras áreas)</td><td class="n">4</td><td class="n">9,8 %</td><td class="n">—</td></tr>
+          <tr class="total"><td>Total</td><td class="n">41</td><td class="n">100 %</td><td class="n">37 casos</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <figure class="viz">
+    <div class="viz-slot embed" data-viz="2">
+      <div class='tableauPlaceholder' id='viz1792011810694' style='position: relative'><noscript><a href='#'><img alt='Dashboard 1 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Gr&#47;Grafico2desviosportematica&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /><param name='embed_code_version' value='3' /><param name='site_root' value='' /><param name='name' value='Grafico2desviosportematica&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Gr&#47;Grafico2desviosportematica&#47;Dashboard1&#47;1.png' /><param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='es-ES' /></object></div>
+    </div>
+    <figcaption><b>Gráfico 2.</b> Desvíos de septiembre por temática de la interacción. Fuente: registro de desvíos en reaperturas y no conformidades.</figcaption>
+  </figure>
+</section>
+
+<!-- ═══════════════════════ 03 · FINALES POR TRIBUNAL ═══════════════════════ -->
+<section class="sec" id="tribunales">
+  <div class="sec-head">
+    <span class="sec-num">03</span>
+    <div>
+      <p class="kicker">Secretaría Académica Administrativa · Departamento de Alumnos</p>
+      <h2>Inscripción a finales por tribunal: anticiparse dio resultado</h2>
+    </div>
+  </div>
+  <p class="sec-lede">Para el cuarto y último período de tribunales del año, la SAA trabajó antes de que abriera la inscripción. Las solicitudes por tribunales no asignados bajaron un 46,5&nbsp;%.</p>
+
+  <div class="kpis">
+    <div class="kpi"><span class="l">Solicitudes por tribunales no asignados</span><span class="v up">−46,5 %</span><span class="n">Contra el tercer período</span></div>
+    <div class="kpi"><span class="l">Tickets de documentación</span><span class="v">1.124</span><span class="n">Segundo tema del mes en DA</span></div>
+    <div class="kpi"><span class="l">Legajos auditados</span><span class="v">5.385</span><span class="n">Cohorte 1390; 99 con inconsistencias</span></div>
+    <div class="kpi"><span class="l">Inscripción al cuarto período</span><span class="v sm">14 al 25/9</span><span class="n">Evaluación de octubre · DyC</span></div>
+  </div>
+
+  <div class="prose">
+    <p>La inscripción a los exámenes previos por tribunal de Diseño y Comunicación para la evaluación de octubre estuvo abierta del <b>14 al 25 de septiembre</b>. Antes de esa fecha, la Secretaría Académica Administrativa armó un reporte de los alumnos con finales pendientes, identificó las asignaturas adeudadas y pidió a la Facultad que asignara los tribunales correspondientes, para que los alumnos pudieran inscribirse sin trabas desde la apertura. El resultado medido fue una baja aproximada del <b>46,5&nbsp;%</b> en las solicitudes por tribunales no asignados respecto del tercer período, cuya inscripción fue en agosto. En palabras de la SAA: «Observamos que la gestión anticipada contribuyó a una disminución en la cantidad de solicitudes por parte de los alumnos en comparación con el 3er periodo de tribunales».</p>
+    <p>En paralelo, la documentación fue el segundo tema del mes en el Departamento de Alumnos (<b>1.124</b> tickets): consultas de ingresantes, documentación adeudada para inscribirse a tribunales y a los finales de octubre y pedidos de excepción. La SAA completó la auditoría de la cohorte 1390, con <b>5.385</b> legajos revisados y <b>99</b> con inconsistencias, cuya regularización se va a gestionar con los alumnos.</p>
+  </div>
+
+  <div class="tables">
+    <div class="tbl">
+      <h3>Períodos de tribunales de Diseño y Comunicación · 2026</h3>
+      <table>
+        <thead><tr><th>Período</th><th>Inscripción</th><th>Encuentros</th><th class="n">Solicitudes por tribunales no asignados</th></tr></thead>
+        <tbody>
+          <tr><td>Tercero · evaluación de septiembre</td><td>5 al 14 de agosto</td><td>21/8 y 4/9</td><td class="n">Base de comparación</td></tr>
+          <tr><td>Cuarto · evaluación de octubre</td><td>14 al 25 de septiembre</td><td>2/10 y 16/10</td><td class="n up">−46,5 %</td></tr>
+        </tbody>
+      </table>
+      <p class="note">Fechas del calendario académico. El cuarto es el último período de tribunales del año.</p>
+    </div>
+  </div>
+
+  <figure class="viz">
+    <div class="viz-slot embed" data-viz="3">
+      <div class='tableauPlaceholder' id='viz1792011793362' style='position: relative'><noscript><a href='#'><img alt='Dashboard 1 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Gr&#47;Grafico2Tribunales&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /><param name='embed_code_version' value='3' /><param name='site_root' value='' /><param name='name' value='Grafico2Tribunales&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Gr&#47;Grafico2Tribunales&#47;Dashboard1&#47;1.png' /><param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='es-ES' /></object></div>
+    </div>
+    <figcaption><b>Gráfico 3.</b> Solicitudes por tribunales no asignados en el tercer y el cuarto período de 2026. Fuente: Secretaría Académica Administrativa.</figcaption>
+  </figure>
+</section>
+
+<!-- ═══════════════════════ 04 · TÍTULOS Y COLACIÓN ═══════════════════════ -->
+<section class="sec" id="colacion">
+  <div class="sec-head">
+    <span class="sec-num">04</span>
+    <div>
+      <p class="kicker">Entrega de Títulos · Tesorería · SAA · Front Service</p>
+      <h2>Entrega de títulos y Colación: lo hecho y lo que falta</h2>
+    </div>
+  </div>
+  <p class="sec-lede">El Acto de Colación de noviembre es una de las mayores prioridades de la universidad. En septiembre bajó la emisión de títulos y se ordenó el circuito; antes del acto falta completar las gestiones de títulos pendientes.</p>
+
+  <div class="kpis k6">
+    <div class="kpi"><span class="l">Trámites impresos</span><span class="v">139</span><span class="n">−66 % vs. agosto</span></div>
+    <div class="kpi"><span class="l">Piezas impresas</span><span class="v">307</span><span class="n">139 AF · 135 diplomas · 18 de honor · 15 orientaciones</span></div>
+    <div class="kpi"><span class="l">Reimpresiones</span><span class="v up">9</span><span class="n">−69 % vs. agosto</span></div>
+    <div class="kpi"><span class="l">Auditoría de títulos</span><span class="v sm up">0 desvíos</span><span class="n">Ni de ubicación ni de estado · Tesorería</span></div>
+    <div class="kpi"><span class="l">Gestiones de títulos en proceso</span><span class="v sm down">78 de 88</span><span class="n">SAA; algunas fuera de plazo</span></div>
+    <div class="kpi"><span class="l">Acto de Colación</span><span class="v sm">Noviembre</span><span class="n">Prioridad institucional</span></div>
+  </div>
+
+  <div class="prose">
+    <p>Entrega de Títulos imprimió <b>139</b> trámites, dos tercios menos que en agosto, y aprovechó el menor volumen para adelantar trabajo y unificar criterios de impresión. Las reimpresiones bajaron a <b>9</b> (<b>−69&nbsp;%</b>) y en total se imprimieron <b>307</b> piezas: 139&nbsp;AF, 135&nbsp;diplomas, 18&nbsp;diplomas de honor y 15&nbsp;orientaciones. Tesorería regularizó la organización de los títulos, y en la última auditoría no hubo desvíos de ubicación ni de estado. También corrigió los títulos que no tenían la tilde, con un análisis desde 2025, y puso en marcha un nuevo proveedor de correo que redujo los tiempos de envío. La Secretaría Académica Administrativa avanzó en la regularización de los títulos que habían superado el plazo de entrega y auditó de forma preventiva a los <b>432</b> alumnos de los Ciclos de Complementación de Diseño y Comunicación, después de detectar tres casos con problemas al emitir el título. Todos cumplen los requisitos de admisión.</p>
+    <p>La preparación de la Colación ya está en marcha. La primera tarea de Tesorería para octubre es ordenar los títulos para el acto. Front Service se propuso «hacer especial hincapié en que el equipo comprenda la importancia del Acto de Colación y garantizar que se encuentre plenamente preparado para atender consultas relacionadas con esta temática», porque se espera que esas consultas aumenten en octubre. El equipo de diseño y comunicación trabajó en el instructivo de Colación, y Eventos, que en septiembre tuvo dificultades con la disponibilidad de Soporte Técnico y con el catering, se propone coordinar con Tecnología una respuesta más ágil, algo clave para un acto de esta escala.</p>
+    <p>Lo que falta para llegar bien a noviembre está identificado. La SAA cerró septiembre con <b>78 de sus 88</b> gestiones de títulos en proceso, algunas fuera de plazo, y completarlas antes del acto es la prioridad. Noviembre además concentra la apertura de la inscripción a finales de diciembre (del 6&nbsp;al&nbsp;8), la emisión de actas de cursado de la SAA (2&nbsp;y&nbsp;13) y el fin de cursada (20), así que octubre es el mes para dejar todo listo. Tesorería también advierte que el nuevo orden de títulos todavía no se probó en un mes de alta demanda. Para que el acto salga como la institución espera, conviene cerrar octubre con un cronograma común entre las áreas: títulos regularizados, equipo de atención preparado, comunicación publicada y logística confirmada.</p>
+  </div>
+
+  <div class="tables">
+    <div class="tbl">
+      <h3>Hoja de ruta hacia la Colación</h3>
+      <table>
+        <thead><tr><th>Momento</th><th>Acción</th><th>Área</th></tr></thead>
+        <tbody>
+          <tr><td class="grp">Septiembre · hecho</td><td>Títulos ordenados y auditados, sin desvíos</td><td>Tesorería</td></tr>
+          <tr><td class="grp">Septiembre · hecho</td><td>Auditoría preventiva de 432 alumnos de Ciclos de Complementación</td><td>SAA</td></tr>
+          <tr><td class="grp">Septiembre · hecho</td><td>Instructivo de Colación</td><td>Diseño y Comunicación</td></tr>
+          <tr><td class="grp">Septiembre · hecho</td><td>Criterios de impresión unificados; reimpresiones −69 %</td><td>Entrega de Títulos</td></tr>
+          <tr><td class="grp">Octubre · en curso</td><td>Ordenar los títulos para la Colación</td><td>Tesorería</td></tr>
+          <tr><td class="grp">Octubre · en curso</td><td>Preparar al equipo para las consultas sobre la Colación</td><td>Front Service</td></tr>
+          <tr><td class="grp">Octubre · en curso</td><td>Coordinar con Tecnología y Soporte Técnico</td><td>Eventos</td></tr>
+          <tr><td class="grp">Octubre · en curso</td><td>Completar las gestiones de títulos en proceso</td><td>SAA</td></tr>
+          <tr><td class="grp">Noviembre</td><td>Emisión de actas de cursado (2&nbsp;y&nbsp;13), apertura de inscripción a finales de diciembre (6&nbsp;al&nbsp;8) y fin de cursada (20)</td><td>Calendario académico</td></tr>
+          <tr><td class="grp">Noviembre</td><td>Acto de Colación</td><td>Institucional</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <figure class="viz">
+    <div class="viz-slot embed" data-viz="4">
+      <div class='tableauPlaceholder' id='viz1792011728689' style='position: relative'><noscript><a href='#'><img alt='Dashboard 1 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Gr&#47;Grafico4Diplomasyttulos&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /><param name='embed_code_version' value='3' /><param name='site_root' value='' /><param name='name' value='Grafico4Diplomasyttulos&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Gr&#47;Grafico4Diplomasyttulos&#47;Dashboard1&#47;1.png' /><param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='es-ES' /><param name='filter' value='publish=yes' /></object></div>
+    </div>
+    <figcaption><b>Gráfico 4.</b> Movimiento de trámites de títulos (ID 10 y 54) y evolución del stock pendiente, de mayo a septiembre. Fuente: pasos de trámites · informes de Tesorería, SAA y Entrega de Títulos.</figcaption>
+  </figure>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Reporte de Gestión Integral · Septiembre 2026</span>
+    <span>Fuentes: informes de área · registro de atenciones · desvíos de septiembre · calendario académico</span>
+  </div>
+</footer>
+
+<script>
+/* 1. El recuadro guía desaparece solo cuando hay un embed (o un <img>) dentro del slot,
+      y el slot pasa al formato de gráfico insertado. */
+document.querySelectorAll('.viz-slot').forEach(function(slot){
+  var ph = slot.querySelector(':scope > .viz-ph');
+  if(!ph) return;
+  var otros = Array.prototype.filter.call(slot.children, function(el){ return el !== ph; });
+  if(otros.length){ ph.remove(); slot.classList.add('embed'); }
+});
+
+/* 2. Embeds de Tableau Public: se dimensionan al ancho del slot y se reajustan al redimensionar. */
+(function(){
+  /* Los gráficos se publican con tamaño AUTOMÁTICO en Tableau, así que se adaptan
+     a la caja que les demos: mismo ancho y mismo alto para todos.
+     Si algún día uno vuelve a tamaño fijo, va a mostrar scroll interno. */
+  var ALTO = 480;
+  var activos = [];
+
+  function fijar(el, prop, val){ el.style.setProperty(prop, val, 'important'); }
+
+  function dimensionar(){
+    activos.forEach(function(v){
+      if(!v.div.offsetWidth) return;
+      fijar(v.obj, 'width', '100%');
+      fijar(v.obj, 'height', ALTO + 'px');
+    });
+  }
+
+  /* Toma cualquier embed pegado en un slot, con el id que traiga de Tableau. */
+  document.querySelectorAll('.viz-slot .tableauPlaceholder').forEach(function(div){
+    var obj = div.getElementsByTagName('object')[0];
+    if(obj) activos.push({div:div, obj:obj});
+  });
+
+  if(!activos.length) return;
+  dimensionar();
+
+  /* La API se carga una sola vez, aunque se haya pegado el <script> que trae el código de Tableau. */
+  if(!document.querySelector('script[src*="public.tableau.com/javascripts/api/viz_v1.js"]')){
+    var s = document.createElement('script');
+    s.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+    document.body.appendChild(s);
+  }
+
+  var t;
+  window.addEventListener('resize', function(){
+    clearTimeout(t);
+    t = setTimeout(dimensionar, 200);
+  });
+})();
+
+/* 3. Resaltado de la sección activa en la barra de navegación. */
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav a'));
+  var secs  = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function marcar(i){ links.forEach(function(a,j){ a.classList.toggle('on', i===j); }); }
+  marcar(0);
+  if(!('IntersectionObserver' in window)) return;
+  var visibles = {};
+  var io = new IntersectionObserver(function(entradas){
+    entradas.forEach(function(e){ visibles[e.target.id] = e.isIntersecting; });
+    for(var i=0;i<secs.length;i++){ if(secs[i] && visibles[secs[i].id]){ marcar(i); return; } }
+  }, {rootMargin:'-25% 0px -60% 0px'});
+  secs.forEach(function(s){ if(s) io.observe(s); });
+})();
+</script>
+</body>
+</html>
