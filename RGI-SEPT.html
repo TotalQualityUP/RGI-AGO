@@ -505,7 +505,7 @@ document.querySelectorAll('.viz-slot').forEach(function(slot){
   });
   if(!graficos.length) return;
 
-  function anchoSlot(g){ return g.host.parentNode.clientWidth - 12; }
+  function anchoSlot(g){ return Math.max(320, g.host.parentNode.clientWidth - 12); }
 
   function ajustar(g){
     var w = anchoSlot(g), h, s = g.tam;
@@ -551,8 +551,9 @@ document.querySelectorAll('.viz-slot').forEach(function(slot){
   }
 
   var s = document.createElement('script');
-  s.src = 'https://public.tableau.com/javascripts/api/tableau-2.min.js';
-  s.onload = function(){ graficos.forEach(crear); };
+  /* Se carga la librería versionada: el cargador tableau-2.min.js usa document.write y no funciona cargado después. */
+  s.src = 'https://public.tableau.com/javascripts/api/tableau-2.9.2.min.js';
+  s.onload = function(){ graficos.forEach(function(g){ try{ crear(g); }catch(e){ console.error('Gráfico ' + g.nombre, e); } }); };
   document.body.appendChild(s);
 
   var t;
