@@ -157,11 +157,13 @@ figure.viz{margin:30px 0 0}
   background:#faf9f5; border:1px solid var(--rule); border-radius:10px; overflow:hidden;
 }
 .viz-slot > *{max-width:100%}
-.viz-slot object,.viz-slot iframe,.viz-slot img,
+.viz-slot object,.viz-slot img,
 .viz-slot .tableauPlaceholder,.viz-slot tableau-viz{max-width:100%!important; width:100%!important}
 .viz-slot img{height:auto; display:block}
 .viz-slot.embed{background:#fff; padding:6px; display:block; min-height:0; overflow:hidden}
 .viz-slot.embed .tableauPlaceholder{width:100%!important; max-width:100%!important}
+.tq-viz{max-width:100%; overflow:hidden}
+.tq-viz iframe{max-width:none!important; border:0}
 .viz-ph{
   flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:8px; text-align:center; padding:32px; margin:10px;
@@ -228,8 +230,8 @@ footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wr
        Si se pega también el <script> que trae el código de Tableau, no pasa nada: la API se carga una sola vez.
      · Si se republican con datos de septiembre los libros de agosto (desvios/Hoja1 para desvíos por temática,
        tts_17893999157490/Hoja1 para títulos), se pueden reutilizar los bloques del HTML de agosto.
-     · Los dashboards se publican con Tamaño = Automático en Tableau, así se adaptan a la caja del reporte.
-       El alto de los recuadros se controla con la constante ALTO del script.
+     · El script lee de Tableau el tamaño con que se publicó cada gráfico y ajusta la caja a ese tamaño
+       (fijo o rango: alto exacto; automático: alto = ancho × PROPORCION). No hay que ajustar altos a mano.
      · Para imprimir o pasar a PDF, los embeds no se renderizan: exportar cada gráfico
        como PNG y reemplazar el bloque por <img src="graficos/01-....png" alt="...">.
 -->
@@ -481,44 +483,82 @@ document.querySelectorAll('.viz-slot').forEach(function(slot){
   if(otros.length){ ph.remove(); slot.classList.add('embed'); }
 });
 
-/* 2. Embeds de Tableau Public: se dimensionan al ancho del slot y se reajustan al redimensionar. */
+/* 2. Embeds de Tableau Public, con la API de JavaScript v2.
+      Cada gráfico se carga y después se le pregunta a Tableau de qué tamaño está publicado:
+      · Tamaño fijo o rango: la caja toma exactamente ese alto (y ese ancho, si entra), sin scroll interno.
+      · Automático: la caja usa todo el ancho y un alto proporcional (PROPORCION).
+      Así no hace falta tocar nada en Tableau, ni ajustar un alto a mano para cada gráfico. */
 (function(){
-  /* Los gráficos se publican con tamaño AUTOMÁTICO en Tableau, así que se adaptan
-     a la caja que les demos: mismo ancho y mismo alto para todos.
-     Si algún día uno vuelve a tamaño fijo, va a mostrar scroll interno. */
-  var ALTO = 480;
-  var activos = [];
+  var PROPORCION = 0.62;   /* alto = ancho × PROPORCION, solo para gráficos en tamaño Automático */
+  var BARRA = 30;          /* alto aproximado de la barra de herramientas de Tableau */
+  var graficos = [];
 
-  function fijar(el, prop, val){ el.style.setProperty(prop, val, 'important'); }
-
-  function dimensionar(){
-    activos.forEach(function(v){
-      if(!v.div.offsetWidth) return;
-      fijar(v.obj, 'width', '100%');
-      fijar(v.obj, 'height', ALTO + 'px');
-    });
-  }
-
-  /* Toma cualquier embed pegado en un slot, con el id que traiga de Tableau. */
+  /* Lee los datos del bloque que pega Tableau (nombre del libro y filtros). */
   document.querySelectorAll('.viz-slot .tableauPlaceholder').forEach(function(div){
-    var obj = div.getElementsByTagName('object')[0];
-    if(obj) activos.push({div:div, obj:obj});
+    var p = {};
+    div.querySelectorAll('object param').forEach(function(el){ p[el.getAttribute('name')] = el.getAttribute('value'); });
+    if(!p.name) return;
+    var host = document.createElement('div');
+    host.className = 'tq-viz';
+    div.parentNode.replaceChild(host, div);
+    graficos.push({host:host, nombre:p.name.replace(/&#47;/g,'/'), filtro:p.filter || '', tam:null, viz:null});
   });
+  if(!graficos.length) return;
 
-  if(!activos.length) return;
-  dimensionar();
+  function anchoSlot(g){ return g.host.parentNode.clientWidth - 12; }
 
-  /* La API se carga una sola vez, aunque se haya pegado el <script> que trae el código de Tableau. */
-  if(!document.querySelector('script[src*="public.tableau.com/javascripts/api/viz_v1.js"]')){
-    var s = document.createElement('script');
-    s.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-    document.body.appendChild(s);
+  function ajustar(g){
+    var w = anchoSlot(g), h, s = g.tam;
+    if(s && s.behavior !== 'automatic' && s.maxSize && s.maxSize.height){
+      var max = s.maxSize, min = s.minSize || max;
+      var ancho = Math.min(w, max.width || w);
+      if(min.width && ancho < min.width) ancho = Math.min(w, min.width);
+      h = (max.height || min.height) + BARRA;
+      w = ancho;
+    } else {
+      h = Math.round(w * PROPORCION) + BARRA;
+    }
+    g.host.style.width = w + 'px';
+    g.host.style.height = h + 'px';
+    g.host.style.margin = '0 auto';
+    if(g.viz){ try{ g.viz.setFrameSize(w, h); }catch(e){} }
   }
+
+  function crear(g){
+    ajustar(g);
+    var opciones = {
+      hideTabs: true,
+      hideToolbar: false,
+      width: g.host.style.width,
+      height: g.host.style.height,
+      onFirstInteractive: function(){
+        try{
+          var hoja = g.viz.getWorkbook().getActiveSheet();
+          var t = hoja.getSize();
+          g.tam = {behavior: String(t.behavior).toLowerCase(), maxSize: t.maxSize, minSize: t.minSize};
+        }catch(e){}
+        ajustar(g);
+      }
+    };
+    if(g.filtro){
+      g.filtro.split('&').forEach(function(par){
+        var kv = par.split('=');
+        if(kv[0]) opciones[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1] || '');
+      });
+    }
+    var url = 'https://public.tableau.com/views/' + g.nombre + '?:showVizHome=no&:language=es-ES';
+    g.viz = new tableau.Viz(g.host, url, opciones);
+  }
+
+  var s = document.createElement('script');
+  s.src = 'https://public.tableau.com/javascripts/api/tableau-2.min.js';
+  s.onload = function(){ graficos.forEach(crear); };
+  document.body.appendChild(s);
 
   var t;
   window.addEventListener('resize', function(){
     clearTimeout(t);
-    t = setTimeout(dimensionar, 200);
+    t = setTimeout(function(){ graficos.forEach(ajustar); }, 200);
   });
 })();
 
